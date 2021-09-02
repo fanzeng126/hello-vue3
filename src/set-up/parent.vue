@@ -1,11 +1,12 @@
 <template>
   <div id="parent">
     这个是父亲的大小
-    <teleport to='body'>
-      <c-child
+    <c-child
         name="夏利"
-        :modal-open="modalOpen" />
-    </teleport>
+        v-model:modal-open="modalOpen"
+        v-model:name="name"
+        v-model.min="address"
+        v-model.max="age" />
     <button @click="modalOpen=true">
       点击打开弹窗
     </button>
@@ -13,6 +14,7 @@
 </template>
 <script>
 import child from './child.vue'
+import { watch, ref } from 'vue'
 export default {
   components: {
     'c-child': child
@@ -20,7 +22,29 @@ export default {
   emits: ['click'],
   data () {
     return {
-      modalOpen: false
+      name: '夏利',
+      age: 18,
+      address: 123
+    }
+  },
+  setup () {
+    const modalOpen = ref(false)
+    watch(modalOpen, function (val) {
+      console.log('父组件改变', val)
+    })
+    return {
+      modalOpen
+    }
+  },
+  watch: {
+    name (val) {
+      console.log('修改父组件的名称', val)
+    },
+    age (val) {
+      console.log('年龄', val)
+    },
+    address (val) {
+      console.log('address', val)
     }
   }
 }
