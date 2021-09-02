@@ -19,13 +19,21 @@
       <input type="text" :value="user" @change="change" />
     </div>
     <cmd-index :user="user" />
+    <cmd-luck :name="user" :mokc="user">
+      2131
+    </cmd-luck>
+    <cmd-h />
   </div>
 </template>
 <script>
 import index from './new.vue'
+import luck from './luck.vue'
+import h from './h.vue'
 export default {
   components: {
-    'cmd-index': index
+    'cmd-index': index,
+    'cmd-luck': luck,
+    'cmd-h': h
   },
   data () {
     return {

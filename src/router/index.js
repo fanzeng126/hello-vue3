@@ -4,6 +4,9 @@ import study from '../set-up/study.vue'
 import parent from '../set-up/emit/parent.vue'
 import layout from '../set-up/layout/index.vue'
 import home from '../package/home.vue'
+import provide from '../provied-inject/provide.vue'
+import ref from '../ref/rev.vue'
+import focus from '../directive/auto-focus.vue'
 
 const routes = [
   {
@@ -30,6 +33,21 @@ const routes = [
     path: '/package',
     name: 'package',
     component: home
+  },
+  {
+    path: '/provide',
+    name: 'provide',
+    component: provide
+  },
+  {
+    path: '/ref',
+    name: 'ref',
+    component: ref
+  },
+  {
+    path: '/focus',
+    name: 'focus',
+    component: focus
   }
 ]
 
