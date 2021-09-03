@@ -7,6 +7,8 @@ import home from '../package/home.vue'
 import provide from '../provied-inject/provide.vue'
 import ref from '../ref/rev.vue'
 import focus from '../directive/auto-focus.vue'
+import table from '../table/index.vue'
+import checkSelect from '../check-select/index.vue'
 
 const routes = [
   {
@@ -48,6 +50,16 @@ const routes = [
     path: '/focus',
     name: 'focus',
     component: focus
+  },
+  {
+    path: '/table',
+    name: 'table',
+    component: table
+  },
+  {
+    path: '/select',
+    name: 'checkSelect',
+    component: checkSelect
   }
 ]
 

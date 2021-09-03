@@ -29,7 +29,8 @@
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^7.0.0",
     "stylus": "^0.54.7",
-    "stylus-loader": "^3.0.2"
+    "stylus-loader": "^3.0.2",
+    "svg-sprite-loader": "^6.0.9"
   },
   "eslintConfig": {
     "root": true,
