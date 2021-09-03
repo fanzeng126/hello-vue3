@@ -27,18 +27,18 @@ export default {
   }
 }
 </script>
-<style>
+<style lang="postcss" scoped>
 .box {
   position: relative;
   display: inline-block;
-}
-.input {
-  height: 32px;
-  box-sizing: border-box;
-}
-.icon {
-  position:absolute;
-  right: 8px;
-  line-height: 32px;
+  .input {
+    height: 32px;
+    box-sizing: border-box;
+  }
+  .icon {
+    position:absolute;
+    right: 8px;
+    line-height: 32px;
+  }
 }
 </style>
