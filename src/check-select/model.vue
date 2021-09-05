@@ -1,18 +1,22 @@
 <template>
   <div class="model">
-    1231212
+    <vt-check />
   </div>
 </template>
 
 <script>
+import check from './index.vue'
 export default {
+  components: {
+    'vt-check': check
+  },
   mounted () {
-    document.body.appendChild(this.$el)
   }
 }
 </script>
 <style scoped>
 .model {
   position: absolute;
+  top: 200px;
 }
 </style>

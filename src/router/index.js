@@ -8,13 +8,19 @@ import provide from '../provied-inject/provide.vue'
 import ref from '../ref/rev.vue'
 import focus from '../directive/auto-focus.vue'
 import table from '../table/index.vue'
-import checkSelect from '../check-select/index.vue'
+import model from '../check-select/model.vue'
+import postcss from '../postcss/index.vue'
 
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/postcss',
+    name: 'postcss',
+    component: postcss
   },
   {
     path: '/study',
@@ -59,7 +65,7 @@ const routes = [
   {
     path: '/select',
     name: 'checkSelect',
-    component: checkSelect
+    component: model
   }
 ]
 
