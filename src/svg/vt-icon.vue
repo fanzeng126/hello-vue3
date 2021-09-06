@@ -34,8 +34,8 @@ export default {
 
 <style scoped>
 .svg-icon {
-  height: 0.8em;
-  width: 0.8em;
+  height: 12px;
+  width: 12px;;
   position: absolute;
   right: 8px;
   top: 50%;

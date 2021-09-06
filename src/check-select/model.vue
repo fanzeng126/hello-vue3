@@ -15,8 +15,4 @@ export default {
 }
 </script>
 <style scoped>
-.model {
-  position: absolute;
-  top: 200px;
-}
 </style>

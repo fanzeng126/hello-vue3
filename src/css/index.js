@@ -1,1 +1,1 @@
-import './root.pcss'
+import './root.css'

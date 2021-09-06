@@ -1,9 +1,12 @@
 <template>
-  <div class="teleport">
+  <div
+    class="teleport"
+    :style="style">
     21321
   </div>
 </template>
 <script>
+import { reactive, onMounted } from 'vue'
 export default {
   props: {
     parentStyle: {
@@ -12,38 +15,35 @@ export default {
     }
   },
   setup (props) {
-    // const vtWidth = computed(function () {
-    //   return parseInt(width)
-    // })
-
-    // const {
-    //   top,
-    //   bottom,
-    //   left,
-    //   right,
-    //   width: vtWidth,
-    //   height: vtHeight
-    // } = this.$parent.$el.getBoundingClientRect()
-    // return {
-    //   // vtWidth
-    // }
+    const style = reactive({})
+    onMounted(function () {
+      console.log('213', this)
+    })
+    return {
+      style
+    }
   },
   mounted () {
+    this.$nextTick(() => {
+      const {
+        top,
+        left,
+        width: vtWidth,
+        height: vtHeight
+      } = this.$parent.$el.getBoundingClientRect()
+      this.style.top = top + vtHeight + 5 + 'px'
+      this.style.left = left + 'px'
+      this.style.width = vtWidth + 'px'
+    })
     document.body.appendChild(this.$el)
   },
   methods: {
-    calculatePosition () {
-      const { width, height, top, left } = this.parentStyle
-      console.log(width, height, top, left)
-    }
   }
 }
 </script>
 <style lang="postcss" scoped>
 .teleport {
   position: absolute;
-  top: 20px;
-  left: 40px;
   max-height: 200px;
   border: 1px solid red;
 }

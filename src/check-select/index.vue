@@ -9,8 +9,7 @@
   <vt-icon
     icon="down" />
   <vt-teleport
-    v-if="show"
-    :parent-style="parentStyle" />
+    v-if="show"/>
   </div>
 </template>
 <script>
@@ -18,18 +17,10 @@ export default {
   data () {
     return {
       value: 123,
-      show: false,
-      parentStyle: null
+      show: false
     }
   },
   mounted () {
-    this.$nextTick(() => {
-      console.log(this.$el.top)
-      console.log(this.$el.clientTop)
-      console.log(this.$el.offsetTop)
-      console.log(this.$el.offsetLeft)
-      this.parentStyle = window.getComputedStyle(this.$el)
-    })
   },
   methods: {
     focus (val) {
@@ -45,6 +36,7 @@ export default {
 </script>
 <style lang="postcss" scoped>
 .box {
+  font-size: initial;
   position: relative;
   display: inline-block;
   top: 20px;
