@@ -53,7 +53,7 @@ module.exports = {
           require('postcss-nested'),
           require('postcss-simple-vars')({ variables }),
           require('postcss-px2rem-exclude')({
-            remUnit: 35,
+            remUnit: 192,
             exclude: /node_modules|folder_name/i
           }),
         ]
