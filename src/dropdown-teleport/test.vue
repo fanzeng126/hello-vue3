@@ -1,17 +1,16 @@
 <template>
   <div
+    ref="teleport"
     class="teleport"
     :style="style">
     <ul>
       <li
        v-for="(item) in options"
-       :key="item.value"
-       :check="item.value === value"
-       @click="$emit('update:value', item.value)">
+       :key="item.value">
        {{ item.label }}
       </li>
     </ul>
-     <teleport-border
+    <teleport-border
       ref="svg"
       :width="elWidth"
       :height="elHeight"
@@ -25,7 +24,6 @@ export default {
   components: {
     'teleport-border': teleportBorder
   },
-  emits: ['update:value'],
   props: {
     parentStyle: {
       type: Object,
@@ -34,14 +32,10 @@ export default {
     options: {
       type: Array,
       default: () => []
-    },
-    value: {
-      type: Number,
-      default: null
     }
   },
   setup (props) {
-    const svg = ref(null)
+    const teleport = ref(null)
     const style = reactive({})
     const elWidth = ref(0)
     const elHeight = ref(0)
@@ -49,10 +43,8 @@ export default {
       style,
       elWidth,
       elHeight,
-      svg
+      teleport
     }
-  },
-  unmounted () {
   },
   mounted () {
     this.$nextTick(() => {
@@ -85,7 +77,6 @@ export default {
 </script>
 <style lang="postcss" scoped>
 .teleport {
-  transition: all ease .8s;
   position: absolute;
   max-height: 300px;
   font-size: 12px;
@@ -101,10 +92,6 @@ export default {
     }
     li:hover {
       background: $normalGreyBackground;
-      color: $primaryColor;
-    }
-    li[check=true] {
-      font-weight: 700;
       color: $primaryColor;
     }
   }

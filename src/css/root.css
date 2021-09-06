@@ -1,3 +1,4 @@
 :root {
   --mu-primary-color: $primaryColor;
+  --mu-normal-Radius: $normalBlockBorderRadius
 }
