@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import vtIcon from './svg/vt-icon.vue'
-import vtTeleport from './dropdown-teleport/index.vue'
+import vtTeleport from './dropdown-teleport/check-editor.vue'
 import './css/index'
 import './resetFont'
 

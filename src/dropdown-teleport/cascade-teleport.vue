@@ -6,9 +6,15 @@
       <li
        v-for="(item) in options"
        :key="item.value"
-       :check="item.value === value"
-       @click="$emit('update:value', item.value)">
-       {{ item.label }}
+       :check="item.value === modelValue"
+       @click="click(item)">
+        <span>
+          {{ item.label }}
+        </span>
+        <vt-icon
+          v-if="item.children"
+          :key="new Date() + '-'+ item.value"
+          icon="right"/>
       </li>
     </ul>
      <teleport-border
@@ -21,21 +27,23 @@
 <script>
 import { reactive, ref } from 'vue'
 import teleportBorder from './teleport-border.vue'
+import VtIcon from '../svg/vt-icon.vue'
 export default {
   components: {
-    'teleport-border': teleportBorder
+    'teleport-border': teleportBorder,
+    VtIcon
   },
-  emits: ['update:value'],
+  emits: ['update:modelValue'],
   props: {
-    parentStyle: {
-      type: Object,
-      default: () => {}
+    level: {
+      type: Number,
+      default: 1
     },
     options: {
       type: Array,
       default: () => []
     },
-    value: {
+    modelValue: {
       type: Number,
       default: null
     }
@@ -63,7 +71,7 @@ export default {
         height: vtHeight
       } = this.$parent.$el.getBoundingClientRect()
       this.style.top = top + vtHeight + 5 + 'px'
-      this.style.left = left + 'px'
+      this.style.left = (this.level - 1) * vtWidth + left + 'px'
       this.style.width = vtWidth + 'px'
       setTimeout(() => {
         this.initBorder()
@@ -79,6 +87,11 @@ export default {
       const { width, height } = this.$el.getBoundingClientRect()
       this.elWidth = parseInt(width, 10)
       this.elHeight = parseInt(height, 10)
+    },
+    click (item) {
+      if (item.children || this.level === 3) {
+        this.$emit('update:modelValue', item.value)
+      }
     }
   }
 }
@@ -97,6 +110,7 @@ export default {
   ul {
     padding: 0;
     li {
+      position: relative;
       padding-left: 16px;
     }
     li:hover {

@@ -10,6 +10,7 @@ import focus from '../directive/auto-focus.vue'
 import table from '../table/index.vue'
 import model from '../check-select/model.vue'
 import postcss from '../postcss/index.vue'
+import cascadeEditor from '../cascade-editor/mould.vue'
 
 const routes = [
   {
@@ -66,6 +67,11 @@ const routes = [
     path: '/select',
     name: 'checkSelect',
     component: model
+  },
+  {
+    path: '/many',
+    name: 'cascadeEditor',
+    component: cascadeEditor
   }
 ]
 
