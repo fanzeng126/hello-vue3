@@ -1,6 +1,8 @@
 <template>
   <div class="cascade">
-    <cascade-editor v-model:value="value" :options="options" />
+    <cascade-editor
+      v-model="value"
+      :options="options" />
   </div>
 </template>
 

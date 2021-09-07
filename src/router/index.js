@@ -11,6 +11,7 @@ import table from '../table/index.vue'
 import model from '../check-select/model.vue'
 import postcss from '../postcss/index.vue'
 import cascadeEditor from '../cascade-editor/mould.vue'
+import realMould from '../real-cascade/mould.vue'
 
 const routes = [
   {
@@ -69,9 +70,14 @@ const routes = [
     component: model
   },
   {
-    path: '/many',
+    path: '/cascade',
     name: 'cascadeEditor',
     component: cascadeEditor
+  },
+  {
+    path: '/real',
+    name: 'realMould',
+    component: realMould
   }
 ]
 

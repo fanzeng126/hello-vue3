@@ -1,5 +1,5 @@
 <template>
-  <div class="box">
+  <div class="cascade-editor">
     <input
       v-model="label"
       class="input"
@@ -32,10 +32,10 @@
 </template>
 <script>
 import { computed, toRefs, ref, watch, reactive } from 'vue'
-import cascadeTeleport from '../dropdown-teleport/cascade-teleport.vue'
+import cascadeTeleport from './cascade-teleport.vue'
 export default {
   props: {
-    value: {
+    modelValue: {
       type: Array,
       default: () => []
     },
@@ -44,7 +44,7 @@ export default {
       default: () => []
     }
   },
-  emits: ['update:value'],
+  emits: ['update:modelValue'],
   components: {
     'cascade-teleport': cascadeTeleport
   },
@@ -55,7 +55,7 @@ export default {
     const localValue = reactive([])
     const timer = ref(null)
     const input = ref(null)
-    const { value, options } = toRefs(props)
+    const { modelValue, options } = toRefs(props)
     const label = ref('')
 
     const firstOpitons = computed(() => {
@@ -82,7 +82,7 @@ export default {
       return thirdOptions.value.filter(item => item.value === thirdValue.value)
     })
 
-    watch(value, function (val, oldVal) {
+    watch(modelValue, function (val, oldVal) {
       localValue.splice(0, localValue.length, ...val)
       if (val.length === 3) {
         console.log('三个数据')
@@ -95,7 +95,7 @@ export default {
       }
     })
     watch(localValue, function (val) {
-      context.emit('update:value', [...val])
+      context.emit('update:modelValue', [...val])
     })
     watch(firstValue, function (val) {
       if (localValue[0] !== val) {
@@ -158,7 +158,7 @@ export default {
 }
 </script>
 <style lang="postcss" scoped>
-.box {
+.cascade-editor {
   font-size: initial;
   position: relative;
   display: inline-block;
