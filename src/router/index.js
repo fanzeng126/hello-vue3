@@ -12,6 +12,9 @@ import model from '../check-select/model.vue'
 import postcss from '../postcss/index.vue'
 import cascadeEditor from '../cascade-editor/mould.vue'
 import realMould from '../real-cascade/mould.vue'
+import setArray from '../set-up-array/index.vue'
+import vSwitch from '../switch/index.vue'
+import slotParent from '../v-slot/parent.vue'
 
 const routes = [
   {
@@ -78,6 +81,21 @@ const routes = [
     path: '/real',
     name: 'realMould',
     component: realMould
+  },
+  {
+    path: '/array',
+    name: 'setArray',
+    component: setArray
+  },
+  {
+    path: '/switch',
+    name: 'vSwitch',
+    component: vSwitch
+  },
+  {
+    path: '/slot-parent',
+    name: 'slotParent',
+    component: slotParent
   }
 ]
 

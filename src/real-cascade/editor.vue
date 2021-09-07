@@ -4,7 +4,7 @@
       v-model="label"
       class="input"
       type="text"
-      ref="input"
+      ref="inputDom"
       readonly
       @focus="focus"
       @blur="blur" >
@@ -52,11 +52,11 @@ export default {
     const firstValue = ref(null)
     const secondValue = ref(null)
     const thirdValue = ref(null)
-    const localValue = reactive([])
     const timer = ref(null)
-    const input = ref(null)
-    const { modelValue, options } = toRefs(props)
+    const inputDom = ref(null)
+    const localValue = reactive([])
     const label = ref('')
+    const { modelValue, options } = toRefs(props)
 
     const firstOpitons = computed(() => {
       return options.value
@@ -91,7 +91,7 @@ export default {
         label.value = ''
         console.log('timer', timer.value)
         clearTimeout(timer.value)
-        input.value.focus()
+        inputDom.value.focus()
       }
     })
     watch(localValue, function (val) {
@@ -105,7 +105,6 @@ export default {
       }
       if (val) {
         localValue[0] = val
-        console.log('firstValue', val)
       }
     })
     watch(secondValue, function (val) {
@@ -115,18 +114,15 @@ export default {
       }
       if (val) {
         localValue[1] = val
-        console.log('secondValue', val)
       }
     })
     watch(thirdValue, function (val) {
       if (val) {
         localValue[2] = val
-        console.log('thirdValue', val, localValue)
       }
     })
     return {
       label,
-      localValue,
       firstValue,
       secondValue,
       thirdValue,
@@ -134,7 +130,7 @@ export default {
       secondOptions,
       thirdOptions,
       timer,
-      input
+      inputDom
     }
   },
   data () {
@@ -152,7 +148,6 @@ export default {
       this.timer = setTimeout(() => {
         this.show = false
       }, 200)
-      console.log('blur', this.timer)
     }
   }
 }
