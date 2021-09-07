@@ -15,6 +15,7 @@ import realMould from '../real-cascade/mould.vue'
 import setArray from '../set-up-array/index.vue'
 import vSwitch from '../switch/index.vue'
 import slotParent from '../v-slot/parent.vue'
+import button from '../button/index.vue'
 
 const routes = [
   {
@@ -96,6 +97,11 @@ const routes = [
     path: '/slot-parent',
     name: 'slotParent',
     component: slotParent
+  },
+  {
+    path: '/button',
+    name: 'button',
+    component: button
   }
 ]
 

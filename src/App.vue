@@ -6,4 +6,8 @@
 * {
   margin: 0;
 }
+
+#app {
+  font-size: initial;
+}
 </style>

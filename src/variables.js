@@ -78,21 +78,21 @@ module.exports = {
   $inputElementPaddingX: '10px',
 
   $buttonGradient: false,
-  $buttonFontSize: '1rem',
+  $buttonFontSize: '12px',
   $buttonShadow: '0 0 0 0',
   $buttonRoundRadius: '16px',
   $buttonActiveShadow: '0 0 0 0',
   $buttonHoverShadow: '0 0 0 2px',
   $buttonDividerColor: 'rgba(255, 255, 255, .5)',
 
-  $inputFontSize: '1rem',
+  $inputFontSize: '12px',
   $inputFocusShadow: '0 0 0 2px',
   $inputDisabledTextColor: '#999',
   $inputReadonlyBackground: '$normalInfoBackground',
 
   /* calendar */
-  $calendarFontSize: '0.857rem',
-  $calendarTitleFontSize: '1.14rem',
+  $calendarFontSize: '10px',
+  $calendarTitleFontSize: '14px',
 
   /* dropdown */
   $dropdownListPadding: '4px 0',
@@ -100,10 +100,10 @@ module.exports = {
   $dropdownShadow: '$boxShadowLevel1',
 
   /* expander */
-  $expanderHeaderFontSize: '1rem',
+  $expanderHeaderFontSize: '12px',
 
   /* form */
-  $labelFontSize: '1rem',
+  $labelFontSize: '12px',
   $labelColor: '$normalSubtitleTextColor',
 
   /* card */
@@ -115,7 +115,7 @@ module.exports = {
   $maskBackground: 'rgba(0, 0, 0, .5)',
 
   $dialogHeaderHeight: '50px',
-  $dialogTitleFontSize: '1.167rem',
+  $dialogTitleFontSize: '14px',
   $dialogHeaderBackground: '$normalBackground',
   $dialogHeaderBorderBottom: '1px solid $normalDividerColor',
   $dialogFooterHeight: '50px',
@@ -143,5 +143,10 @@ module.exports = {
 
   /* menu */
   $menuItemHeight: '32px',
-  $sidebarMenuItemHeight: '40px'
+  $sidebarMenuItemHeight: '40px',
+
+  /* svg */
+  $svgItemSize: '12px',
+  $svgFillColor: '#777',
+  $svgFillHoverColor: '#24a7e3'
 }
