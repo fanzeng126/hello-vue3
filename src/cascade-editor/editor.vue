@@ -2,14 +2,15 @@
   <div class="box">
     <input
       v-model="label"
-      class="input"
+      class="vt-input"
       type="text"
       ref="input"
       readonly
       @focus="focus"
       @blur="blur" >
     <vt-icon
-      icon="down" />
+      icon="down"
+      class="icon-right" />
     <cascade-teleport
       v-if="show"
       v-model="firstValue"
@@ -164,25 +165,11 @@ export default {
   display: inline-block;
   top: 20px;
   left: 20px;
-  .input {
-    height: 32px;
-    box-sizing: border-box;
-    border: 1px solid #d9d9d9;
-    border-radius: 2px;
-    color: #333;
-  }
-  .input:hover {
-    border: 1px solid #24a7e3;
-  }
-  .input:focus {
-    outline: none;
-    border: 1px solid #008cd6 !important;
-    box-shadow: 0 0 0 2px rgb(0 140 214 / 15%);
-  }
-  .icon {
+  .icon-right {
     position:absolute;
+    top: 50%;
+    transform: translateY(-50%);
     right: 8px;
-    line-height: 32px;
   }
 }
 </style>

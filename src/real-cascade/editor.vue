@@ -2,7 +2,7 @@
   <div class="cascade-editor">
     <input
       v-model="label"
-      class="input"
+      class="vt-input"
       type="text"
       ref="inputDom"
       readonly
@@ -159,21 +159,6 @@ export default {
   display: inline-block;
   top: 20px;
   left: 20px;
-  .input {
-    height: 32px;
-    box-sizing: border-box;
-    border: 1px solid #d9d9d9;
-    border-radius: 2px;
-    color: #333;
-  }
-  .input:hover {
-    border: 1px solid #24a7e3;
-  }
-  .input:focus {
-    outline: none;
-    border: 1px solid #008cd6 !important;
-    box-shadow: 0 0 0 2px rgb(0 140 214 / 15%);
-  }
   .icon {
     position:absolute;
     right: 8px;

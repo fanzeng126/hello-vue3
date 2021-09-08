@@ -14,7 +14,7 @@ export default {
     },
     className: {
       type: String,
-      default: 'default'
+      default: ''
     }
   },
   computed: {
@@ -41,21 +41,4 @@ export default {
     fill: $svgFillHoverColor;
   }
 }
-.svg-icon.default {
-  position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-@keyframes loading {
-  0%   {transform: rotate(0deg);}
-  100% {transform: rotate(360deg);}
-}
-.frame-loading {
-  animation-name: loading;
-  animation-duration: 1s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-}
-
 </style>

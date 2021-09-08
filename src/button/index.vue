@@ -15,7 +15,9 @@
     <vt-button type="info">
       info
     </vt-button>
-    <vt-button type="text">
+    <vt-button
+      icon="loading"
+      type="text">
       text
     </vt-button>
   </div>

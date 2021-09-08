@@ -4,7 +4,7 @@ import router from './router'
 import store from './store'
 import vtIcon from './svg/vt-icon.vue'
 import vtTeleport from './dropdown-teleport/check-editor.vue'
-import './css/index'
+import '../static/css/index'
 import './resetFont'
 
 const app = createApp(App)

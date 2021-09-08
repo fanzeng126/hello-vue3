@@ -42,7 +42,7 @@ module.exports = {
     // 是否使用css分离插件 ExtractTextPlugin 生产环境下是true,开发环境下是false
     extract: true,
     // 开启 CSS source maps?
-    sourceMap: false,
+    sourceMap: true,
     // css预设器配置项
     loaderOptions: {
       css: {
@@ -60,7 +60,7 @@ module.exports = {
       }
     },
     // 启用 CSS modules for all css / pre-processor files.
-    requireModuleExtension: false
+    modules: false
   },
 
   pluginOptions: {}
