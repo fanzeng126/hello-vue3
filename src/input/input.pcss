@@ -1,0 +1,37 @@
+.vt-input {
+  display: inline-block;
+  font-size: $documentFontSize;
+  font-weight: $documentFontWeight;
+  position: relative;
+  overflow: hidden;
+  .vt-input_inner {
+    box-sizing: border-box;
+    border: $inputBorder;
+    border-radius: $normalBlockBorderRadius;
+    color: $normalTextColor;
+    height: $inputElementHeight;
+    padding: 0 $inputElementPaddingX;
+  }
+  .vt-input_inner:hover {
+    border: 1px solid $primaryMinusColor;
+    cursor: pointer;
+  }
+  .vt-input_inner:focus {
+    outline: none;
+    border: 1px solid $primaryColor !important;
+    box-shadow: 0 0 0 2px rgb(0 140 214 / 15%);
+  }
+  .vt-input_inner::-webkit-input-placeholder {
+    color: $inputPlaceholder;
+  }
+  .vt-input_inner[disabled]:hover {
+    border: $inputBorder;
+    cursor: not-allowed;
+  }
+  .vt-input_inner[prefix-icon=true] {
+    padding-left: calc(3 * $inputElementPaddingX);
+  }
+  .vt-input_inner[suffix-icon=true] {
+    padding-right: calc(3 * $inputElementPaddingX);
+  }
+}

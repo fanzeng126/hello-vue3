@@ -58,9 +58,8 @@ module.exports = {
           })
         ]
       }
-    },
+    }
     // 启用 CSS modules for all css / pre-processor files.
-    modules: false
   },
 
   pluginOptions: {}

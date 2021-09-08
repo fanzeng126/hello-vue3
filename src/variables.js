@@ -89,6 +89,8 @@ module.exports = {
   $inputFocusShadow: '0 0 0 2px',
   $inputDisabledTextColor: '#999',
   $inputReadonlyBackground: '$normalInfoBackground',
+  $inputPlaceholder: '#dcdfe6',
+  $inputBorder: '1px solid $normalBorderColor',
 
   /* calendar */
   $calendarFontSize: '10px',
@@ -146,7 +148,11 @@ module.exports = {
   $sidebarMenuItemHeight: '40px',
 
   /* svg */
-  $svgItemSize: '12px',
+  $svgItemSize: '16px',
   $svgFillColor: '#777',
-  $svgFillHoverColor: '#24a7e3'
+  $svgFillHoverColor: '#24a7e3',
+
+  /* tips */
+  $tipFontColor: '#909399',
+  $tipFontSize: '10px'
 }

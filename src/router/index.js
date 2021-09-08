@@ -16,6 +16,7 @@ import setArray from '../set-up-array/index.vue'
 import vSwitch from '../switch/index.vue'
 import slotParent from '../v-slot/parent.vue'
 import button from '../button/index.vue'
+import input from '../input/index.vue'
 
 const routes = [
   {
@@ -102,6 +103,11 @@ const routes = [
     path: '/button',
     name: 'button',
     component: button
+  },
+  {
+    path: '/input',
+    name: 'input',
+    component: input
   }
 ]
 

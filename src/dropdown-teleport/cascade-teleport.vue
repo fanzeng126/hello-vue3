@@ -14,7 +14,8 @@
         <vt-icon
           v-if="item.children"
           :key="new Date() + '-'+ item.value"
-          icon="right"/>
+          icon="right"
+          class="icon-right" />
       </li>
     </ul>
      <teleport-border
@@ -112,6 +113,12 @@ export default {
     li {
       position: relative;
       padding-left: 16px;
+      .icon-right {
+        position:absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 8px;
+      }
     }
     li:hover {
       background: $normalGreyBackground;
