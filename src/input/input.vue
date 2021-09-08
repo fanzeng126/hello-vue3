@@ -31,7 +31,8 @@
       @input="input"
       @change="change"
       @focus="focus"
-      @blur="blur" >
+      @blur="blur"
+      @select="select" >
     <vt-icon
       v-if="inputSuffixIcon"
       :icon="inputSuffixIcon"
@@ -163,7 +164,10 @@ export default {
   emits: [
     'update:modelValue',
     'focus',
-    'blur'
+    'blur',
+    'clear',
+    'change',
+    'input'
   ],
   setup (props, { emit }) {
     const { modelValue: value, type, wordLimit, suffixIcon, clearable } = toRefs(props)
@@ -212,6 +216,7 @@ export default {
       switch (this.inputSuffixIcon) {
         case 'close':
           this.$emit('update:modelValue', '')
+          this.$emit('clear', '')
           break
         default:
           break
@@ -222,6 +227,8 @@ export default {
     },
     mousedown () {
       if (this.inputSuffixIcon === 'eyes') this.seePassword = true
+    },
+    select (e) {
     }
   }
 }
