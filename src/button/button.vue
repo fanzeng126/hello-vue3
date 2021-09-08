@@ -16,6 +16,8 @@
 
 <script>
 import { toRefs, computed, inject } from 'vue'
+import './button.pcss'
+
 const useButtonSize = (size) => {
   return computed(() => {
     const elFormItem = inject('elFormItem', {})
@@ -31,8 +33,8 @@ const userButtonDisabled = (disabled) => {
 
 const useClasses = ({ props, buttonSize, buttonDisabled }) => {
   return computed(() => [
-    buttonSize.value ? `el-button--${buttonSize.value}` : '',
-    props.type ? `el-button--${props.type}` : '',
+    buttonSize.value ? `vt-button--${buttonSize.value}` : '',
+    props.type ? `vt-button--${props.type}` : '',
     {
       'is-plain': props.plain,
       'is-round': props.round,
@@ -107,31 +109,3 @@ export default {
   }
 }
 </script>
-<style lang="postcss" scoped>
-.vt-button {
-  position: relative;
-  display: inline-block;
-  height: $inputElementHeight;
-  padding: 0 $inputElementPaddingX;
-  outline: none;
-  border: 1px solid $normalBorderColor;
-  border-radius: var(--mu-block-border-radius);
-  line-height: 1;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  background: $normalBackground;
-  /* vertical-align: middle; */
-  font-size: $buttonFontSize;
-  text-decoration: none;
-  text-align: center;
-  color: $normalTextColor;
-  cursor: pointer;
-  box-shadow: $buttonShadow $normalGreyBackground;
-  &:hover {
-    border-color: var(--mu-primary-minus-color);
-    color: var(--mu-primary-minus-color);
-    box-shadow: $buttonHoverShadow var(--mu-primary-shadow-color);
-  }
-}
-</style>
