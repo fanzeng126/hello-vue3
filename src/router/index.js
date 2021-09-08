@@ -17,6 +17,7 @@ import vSwitch from '../switch/index.vue'
 import slotParent from '../v-slot/parent.vue'
 import button from '../button/index.vue'
 import input from '../input/index.vue'
+import resize from '../resize-box/index.vue'
 
 const routes = [
   {
@@ -108,6 +109,11 @@ const routes = [
     path: '/input',
     name: 'input',
     component: input
+  },
+  {
+    path: '/resize',
+    name: 'resize',
+    component: resize
   }
 ]
 

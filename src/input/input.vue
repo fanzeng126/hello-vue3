@@ -10,7 +10,7 @@
     <input
       class="vt-input_inner"
       :type="inputTpye"
-      ref="input"
+      ref="vtInput"
       :readonly="readonly"
       :value="value"
       :placeholder="placeholder"
@@ -31,8 +31,7 @@
       @input="input"
       @change="change"
       @focus="focus"
-      @blur="blur"
-      @select="select" >
+      @blur="blur" >
     <vt-icon
       v-if="inputSuffixIcon"
       :icon="inputSuffixIcon"
@@ -172,6 +171,8 @@ export default {
   setup (props, { emit }) {
     const { modelValue: value, type, wordLimit, suffixIcon, clearable } = toRefs(props)
 
+    const vtInput = ref(null)
+
     const seePassword = ref(false)
 
     const inputTpye = computed(() => seePassword.value ? 'text' : type.value)
@@ -196,7 +197,8 @@ export default {
       limitTips,
       inputSuffixIcon,
       seePassword,
-      inputTpye
+      inputTpye,
+      vtInput
     }
   },
   methods: {
@@ -227,8 +229,6 @@ export default {
     },
     mousedown () {
       if (this.inputSuffixIcon === 'eyes') this.seePassword = true
-    },
-    select (e) {
     }
   }
 }
