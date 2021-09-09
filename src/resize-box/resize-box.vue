@@ -1,32 +1,28 @@
 <template>
-  <div
-    ref="topBorder"
-    class="resize-border top" />
-  <div
-    ref="leftBorder"
-    class="resize-border left" />
-  <div
-    ref="rightBorder"
-    class="resize-border right" />
-  <div
-    ref="bottomBorder"
-    class="resize-border bottom" />
+  <div class="resize-border top" />
+  <div class="resize-border left" />
+  <div class="resize-border right" />
+  <div class="resize-border bottom" />
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, toRefs, watch } from 'vue'
 export default {
-  emits: ['moveX', 'moveY', 'clear', 'move'],
-  setup (props, context) {
-    const topBorder = ref(null)
+  props: {
+    width: {
+      type: Number,
+      required: true
+    },
+    height: {
+      type: Number,
+      required: true
+    }
+  },
+  emits: ['update:width', 'update:height'],
+  setup (props, { emit }) {
+    const { width, height } = toRefs(props)
 
-    const leftBorder = ref(null)
-
-    const bottomBorder = ref(null)
-
-    const rightBorder = ref(null)
-
-    const isClick = ref(false)
+    const selectEl = ref(null)
 
     const startX = ref(0)
 
@@ -36,45 +32,63 @@ export default {
 
     const moveX = ref(0)
 
-    const select = ref(null)
+    const direction = ref('')
+
+    watch(moveX, (newVal, oldVal) => {
+      if (selectEl.value) {
+        emit('update:width', width.value + (newVal - oldVal))
+      }
+    })
+    watch(moveY, (newVal, oldVal) => {
+      if (selectEl.value) {
+        emit('update:height', height.value + (newVal - oldVal))
+      }
+    })
     return {
-      topBorder,
-      leftBorder,
-      bottomBorder,
-      rightBorder,
       startX,
       startY,
-      isClick,
       moveY,
       moveX,
-      select
+      selectEl,
+      direction
     }
   },
   mounted () {
     document.addEventListener('mousemove', (e) => {
-      if (this.isClick) {
+      if (this.selectEl) {
         this.moveX = e.pageX - this.startX
         this.moveY = e.pageY - this.startY
-        this.$emit('moveX', this.moveX)
-        this.$emit('moveY', this.moveY)
       }
     })
     document.addEventListener('mousedown', (e) => {
       if (e.target && e.target.classList.contains('resize-border')) {
-        this.$emit('move')
-        e.target.classList.add('move')
-        document.body.classList.add('move-right')
-        this.select = e.target
-        this.startX = e.pageX
-        this.startY = e.pageY
-        this.isClick = true
+        const classList = e.target.classList
+        if (classList.contains('top')) {
+          this.direction = 'top'
+        } else if (classList.contains('left')) {
+          this.direction = 'left'
+        } else if (classList.contains('right')) {
+          this.direction = 'right'
+        } else if (classList.contains('bottom')) {
+          this.direction = 'bottom'
+        }
+        if (this.direction) {
+          classList.add('move')
+          document.body.classList.add(`resize-${this.direction}`)
+          this.selectEl = e.target
+          this.startX = e.pageX
+          this.startY = e.pageY
+        }
       }
     })
     document.addEventListener('mouseup', (e) => {
-      this.isClick = false
-      this.$emit('clear')
-      if (this.select && this.select.classList.contains('move')) {
-        this.select.classList.remove('move')
+      if (this.selectEl && this.selectEl.classList.contains('move')) {
+        this.selectEl.classList.remove('move')
+        document.body.classList.remove(`resize-${this.direction}`)
+        this.selectEl = null
+        this.moveX = 0
+        this.moveY = 0
+        this.direction = ''
       }
     })
   }

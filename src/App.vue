@@ -6,7 +6,16 @@
 * {
   margin: 0;
 }
-.move-right {
+body.resize-top  {
+  cursor: n-resize;
+}
+body.resize-left  {
+  cursor: w-resize;
+}
+body.resize-right {
   cursor: e-resize;
+}
+body.resize-bottom {
+  cursor: s-resize;
 }
 </style>
