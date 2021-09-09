@@ -1,7 +1,7 @@
 <template>
   <div class="model">
     <vt-check
-      v-model:value="value"
+      v-model="value"
       :options="options" />
   </div>
 </template>

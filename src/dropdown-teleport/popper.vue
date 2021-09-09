@@ -1,66 +1,68 @@
 <template>
-  <div
-    class="editor-wrap"
-    :style="style">
-    <slot />
-    <ul>
-      <li
-       v-for="(item) in options"
-       :key="item.value"
-       :check="item.value === value"
-       @click="$emit('update:value', item.value)">
-       {{ item.label }}
-      </li>
-    </ul>
-  </div>
+  <teleport
+    v-if="show"
+    to="body">
+    <div
+      class="editor-popper"
+      :style="style">
+      <slot />
+    </div>
+  </teleport>
 </template>
 <script>
-import { reactive, ref } from 'vue'
+import { reactive, ref, toRefs } from 'vue'
+import { getRectStyle } from '../utils/getRectStyle'
 export default {
-  emits: ['update:value'],
   props: {
-    options: {
-      type: Array,
-      default: () => []
+    visiable: {
+      type: Boolean,
+      default: false,
+      required: true
     },
-    value: {
+    level: { // 级联选择器时的弹窗位置变化
       type: Number,
-      default: null
+      default: 1
     }
   },
   setup (props) {
-    const style = reactive({})
-    const elWidth = ref(0)
-    const elHeight = ref(0)
+    const show = ref(false)
+    const { visiable } = toRefs(props)
+    show.value = visiable.value
+    const style = reactive({ 'max-height': '0px' })
     return {
       style,
-      elWidth,
-      elHeight
+      show
     }
   },
-  unmounted () {
-  },
-  mounted () {
-    this.$nextTick(() => {
-      const {
-        top,
-        left,
-        width: vtWidth,
-        height: vtHeight
-      } = this.$parent.$el.getBoundingClientRect()
-      this.style.top = top + vtHeight + 5 + 'px'
-      this.style.left = left + 'px'
-      this.style.width = vtWidth + 'px'
-    })
-    document.body.appendChild(this.$el)
+  watch: {
+    visiable (newVal) {
+      if (newVal) {
+        this.show = true
+        this.$nextTick(() => {
+          const {
+            top,
+            left,
+            width
+          } = getRectStyle(this.$parent.$el)
+          this.style.top = top + 'px'
+          this.style.left = (this.level - 1) * width + left + 'px'
+          this.style.width = width + 'px'
+          this.style['max-height'] = '300px'
+        })
+      } else {
+        this.style['max-height'] = '0px'
+        setTimeout(() => {
+          this.show = false
+        }, 100)
+      }
+    }
   }
 }
 </script>
 <style lang="postcss" scoped>
-.editor-wrap {
-  transition: all ease .8s;
+.editor-popper {
+  transition: all ease .1s;
   position: absolute;
-  max-height: $wrapMaxHeight;
   font-size: $documentFontSize;
   overflow: auto;
   border-radius: $normalBlockBorderRadius;
@@ -70,19 +72,5 @@ export default {
   box-sizing: border-box;
   padding: $wrapMargin 0;
   line-height: $normalLineHeight;
-  ul {
-    padding: 0;
-    li {
-      padding-left: $inputElementPaddingX;
-    }
-    li:hover {
-      background: $normalGreyBackground;
-      color: $primaryColor;
-    }
-    li[check=true] {
-      font-weight: bolder;
-      color: $primaryColor;
-    }
-  }
 }
 </style>

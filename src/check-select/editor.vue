@@ -7,16 +7,24 @@
       @focus="focus"
       @blur="blur" />
     <vt-popper
-      v-if="show"
-      v-model:value="localValue"
-      :options="options"/>
+      :visiable="show">
+      <ul>
+        <li
+        v-for="(item) in options"
+        :key="item.value"
+        :check="item.value === modelValue"
+        @click="click(item)">
+        {{ item.label }}
+        </li>
+      </ul>
+    </vt-popper>
   </div>
 </template>
 <script>
-import { computed, toRefs, ref, watch } from 'vue'
+import { computed, toRefs } from 'vue'
 export default {
   props: {
-    value: {
+    modelValue: {
       type: Number,
       default: null
     },
@@ -25,24 +33,15 @@ export default {
       default: () => []
     }
   },
-  emits: ['update:value'],
+  emits: ['update:modelValue'],
   setup (props, { emit }) {
-    const localValue = ref(null)
-    const { value, options } = toRefs(props)
-    localValue.value = value.value
+    const { modelValue, options } = toRefs(props)
     const label = computed(() => {
-      const filterValue = options.value.filter(item => item.value === value.value)
+      const filterValue = options.value.filter(item => item.value === modelValue.value)
       return filterValue.length ? filterValue[0].label : ''
     })
-    watch(value, function (val) {
-      localValue.value = val
-    })
-    watch(localValue, function (val) {
-      emit('update:value', val)
-    })
     return {
-      label,
-      localValue
+      label
     }
   },
   data () {
@@ -60,6 +59,9 @@ export default {
       setTimeout(() => {
         this.show = false
       }, 200)
+    },
+    click (item) {
+      this.$emit('update:modelValue', item.value)
     }
   }
 }
@@ -68,7 +70,20 @@ export default {
 .editor {
   position: relative;
   font-size: 0;
-  left: 20px;
   display: inline-block;
+}
+ul {
+  padding: 0;
+  li {
+    padding-left: $inputElementPaddingX;
+  }
+  li:hover {
+    background: $normalGreyBackground;
+    color: $primaryColor;
+  }
+  li[check=true] {
+    font-weight: bolder;
+    color: $primaryColor;
+  }
 }
 </style>

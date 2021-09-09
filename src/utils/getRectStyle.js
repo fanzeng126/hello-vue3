@@ -1,18 +1,18 @@
-function getRectStyle (el) {
+export function getRectStyle (el) {
   const {
     top,
-    bottom,
     left,
     right,
-    width: vtWidth,
-    height: vtHeight
-  } = el
+    bottom,
+    width,
+    height
+  } = el.getBoundingClientRect()
   return {
-    top,
-    bottom,
-    left,
-    right,
-    width: vtWidth,
-    height: vtHeight
+    top: top + height + 5,
+    left: left,
+    right: right,
+    bottom: bottom + height + 5,
+    width,
+    height
   }
 }
