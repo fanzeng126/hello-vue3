@@ -5,7 +5,7 @@
       :icon="prefixIcon"
       :class="[
         iconClass,
-        'icon-prefix'
+        'tips prefix'
       ]" />
     <input
       class="vt-input_inner"
@@ -37,7 +37,7 @@
       :icon="inputSuffixIcon"
       :class="[
         iconClass,
-        'icon-suffix'
+        'tips suffix'
       ]"
       @click="clickSuffixIcon"
       @mousedown="mousedown"
@@ -45,9 +45,13 @@
       @mouseleave="mouseup" />
     <span
       v-if="inputWordLimit"
-      class="tips">
+      class="tips msg">
       {{ limitTips }}
     </span>
+    <vt-resize
+        v-model:width="width"
+        v-model:height="height"
+        :resize="resize" />
   </div>
 </template>
 <script>
@@ -201,6 +205,31 @@ export default {
       vtInput
     }
   },
+  data () {
+    return {
+      width: 0,
+      height: 0
+    }
+  },
+  mounted () {
+    // 获取到结束渲染之后的input的高，宽
+    setTimeout(() => {
+      const {
+        width,
+        height
+      } = this.vtInput.getBoundingClientRect()
+      this.width = width
+      this.height = height
+    }, 200)
+  },
+  watch: {
+    width (val) {
+      this.vtInput.style.width = `${val}px`
+    },
+    height (val) {
+      this.vtInput.style.height = `${val}px`
+    }
+  },
   methods: {
     input (e) {
       this.$emit('update:modelValue', e.target.value)
@@ -238,23 +267,17 @@ export default {
   position:absolute;
   top: 50%;
   transform: translateY(-50%);
-  right: 10px;
   cursor: pointer;
+}
+.msg {
+  right: 10px;
   font-size: $tipFontSize;
   color: $tipFontColor;
 }
-.icon-prefix {
-  position:absolute;
-  top: 50%;
-  transform: translateY(-50%);
+.prefix {
   left: 10px;
-  cursor: pointer;
 }
-.icon-suffix {
-  position:absolute;
-  top: 50%;
-  transform: translateY(-50%);
+.suffix {
   right: 10px;
-  cursor: pointer;
 }
 </style>

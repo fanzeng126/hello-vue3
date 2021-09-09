@@ -19,11 +19,7 @@
 </template>
 <script>
 import { ref } from 'vue'
-import resizeBox from './resize-box.vue'
 export default {
-  components: {
-    'vt-resize': resizeBox
-  },
   setup () {
     const height = ref(300)
 
