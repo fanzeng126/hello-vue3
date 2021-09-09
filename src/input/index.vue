@@ -4,16 +4,11 @@
     prefix-icon="search"
     placeholder="我的世界"
     :clearable="true"
-    @clickPrefixIcon="clickPrefixIcon"
-    @clickSuffixIcon="clickSuffixIcon" />
+    resize="horizontal" />
 </template>
 
 <script>
-import input from './input.vue'
 export default {
-  components: {
-    'vt-input': input
-  },
   data () {
     return {
       value: '',
