@@ -1,26 +1,26 @@
 <template>
-  <div class="resize-border top" />
-  <div class="resize-border left" />
-  <div class="resize-border right" />
-  <div class="resize-border bottom" />
+  <div v-if="resizeH" class="resize-border right" />
+  <div v-if="resizeV" class="resize-border bottom" />
 </template>
 
 <script>
-import { ref, toRefs, watch } from 'vue'
+import { ref, toRefs, watch, computed } from 'vue'
 export default {
   props: {
     width: {
-      type: Number,
-      required: true
+      type: Number
     },
     height: {
-      type: Number,
-      required: true
+      type: Number
+    },
+    resize: {
+      type: String,
+      validator: (val) => ['none', 'both', 'horizontal', 'vertical'].includes(val)
     }
   },
   emits: ['update:width', 'update:height'],
   setup (props, { emit }) {
-    const { width, height } = toRefs(props)
+    const { width, height, resize } = toRefs(props)
 
     const selectEl = ref(null)
 
@@ -34,13 +34,17 @@ export default {
 
     const direction = ref('')
 
+    const resizeH = computed(() => width && ['both', 'horizontal'].includes(resize.value))
+
+    const resizeV = computed(() => height && ['both', 'vertical'].includes(resize.value))
+
     watch(moveX, (newVal, oldVal) => {
-      if (selectEl.value) {
+      if (selectEl.value && resizeH.value) {
         emit('update:width', width.value + (newVal - oldVal))
       }
     })
     watch(moveY, (newVal, oldVal) => {
-      if (selectEl.value) {
+      if (selectEl.value && resizeV.value) {
         emit('update:height', height.value + (newVal - oldVal))
       }
     })
@@ -50,7 +54,9 @@ export default {
       moveY,
       moveX,
       selectEl,
-      direction
+      direction,
+      resizeH,
+      resizeV
     }
   },
   mounted () {
@@ -95,21 +101,6 @@ export default {
 }
 </script>
 <style lang="postcss" scoped>
-.resize-border.top {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 4px;
-  z-index: 2;
-}
-.resize-border.left {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 4px;
-  height: 100%;
-  z-index: 2;
-}
 .resize-border.right {
   position: absolute;
   top: 0;
@@ -124,12 +115,6 @@ export default {
   width: 100%;
   height: 4px;
   z-index: 2;
-}
-.resize-border.top:hover {
-  cursor: n-resize;
-}
-.resize-border.left:hover {
-  cursor: w-resize;
 }
 .resize-border.right:hover {
   cursor: e-resize;

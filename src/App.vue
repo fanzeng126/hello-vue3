@@ -6,12 +6,6 @@
 * {
   margin: 0;
 }
-body.resize-top  {
-  cursor: n-resize;
-}
-body.resize-left  {
-  cursor: w-resize;
-}
 body.resize-right {
   cursor: e-resize;
 }
