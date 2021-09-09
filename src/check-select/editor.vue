@@ -1,19 +1,15 @@
 <template>
-  <div class="box">
-    <input
+  <div class="editor">
+    <vt-input
       v-model="label"
-      class="vt-input"
-      type="text"
       readonly
+      suffix-icon="down"
       @focus="focus"
-      @blur="blur" >
-  <vt-icon
-    icon="down"
-    class="icon-right" />
-  <vt-teleport
-    v-if="show"
-    v-model:value="localValue"
-    :options="options"/>
+      @blur="blur" />
+    <vt-popper
+      v-if="show"
+      v-model:value="localValue"
+      :options="options"/>
   </div>
 </template>
 <script>
@@ -30,19 +26,19 @@ export default {
     }
   },
   emits: ['update:value'],
-  setup (props, context) {
+  setup (props, { emit }) {
     const localValue = ref(null)
     const { value, options } = toRefs(props)
     localValue.value = value.value
     const label = computed(() => {
       const filterValue = options.value.filter(item => item.value === value.value)
-      return filterValue.length ? filterValue[0].label : null
+      return filterValue.length ? filterValue[0].label : ''
     })
     watch(value, function (val) {
       localValue.value = val
     })
     watch(localValue, function (val) {
-      context.emit('update:value', val)
+      emit('update:value', val)
     })
     return {
       label,
@@ -69,17 +65,10 @@ export default {
 }
 </script>
 <style lang="postcss" scoped>
-.box {
-  font-size: initial;
+.editor {
   position: relative;
-  display: inline-block;
-  top: 20px;
+  font-size: 0;
   left: 20px;
-  .icon-right {
-    position:absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 8px;
-  }
+  display: inline-block;
 }
 </style>

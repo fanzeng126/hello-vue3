@@ -62,7 +62,7 @@ module.exports = {
   /* element size */
   $normalBarHeight: '40px',
   $compactBarHeight: '32px',
-  $normalLineHeight: '20px',
+  $normalLineHeight: '24px',
   $normalIconWidth: '20px',
 
   $normalBlockBorderRadius: '3px',
@@ -154,5 +154,10 @@ module.exports = {
 
   /* tips */
   $tipFontColor: '#909399',
-  $tipFontSize: '10px'
+  $tipFontSize: '10px',
+
+  /* wrap */
+  $wrapMaxHeight: '300px',
+  $wrapBorder: '1px solid #e4e7ed',
+  $wrapMargin: '5px'
 }
