@@ -6,4 +6,7 @@
 * {
   margin: 0;
 }
+.move-right {
+  cursor: e-resize;
+}
 </style>

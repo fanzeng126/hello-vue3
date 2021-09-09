@@ -16,6 +16,7 @@
 <script>
 import { ref } from 'vue'
 export default {
+  emits: ['moveX', 'moveY', 'clear', 'move'],
   setup (props, context) {
     const topBorder = ref(null)
 
@@ -25,39 +26,57 @@ export default {
 
     const rightBorder = ref(null)
 
+    const isClick = ref(false)
+
     const startX = ref(0)
 
     const startY = ref(0)
 
+    const moveY = ref(0)
+
+    const moveX = ref(0)
+
+    const select = ref(null)
     return {
       topBorder,
       leftBorder,
       bottomBorder,
       rightBorder,
       startX,
-      startY
+      startY,
+      isClick,
+      moveY,
+      moveX,
+      select
     }
   },
   mounted () {
     document.addEventListener('mousemove', (e) => {
       if (this.isClick) {
-        console.log('mousemove', e.pageX, e.pageY)
+        this.moveX = e.pageX - this.startX
+        this.moveY = e.pageY - this.startY
+        this.$emit('moveX', this.moveX)
+        this.$emit('moveY', this.moveY)
       }
     })
     document.addEventListener('mousedown', (e) => {
       if (e.target && e.target.classList.contains('resize-border')) {
+        this.$emit('move')
+        e.target.classList.add('move')
+        document.body.classList.add('move-right')
+        this.select = e.target
         this.startX = e.pageX
         this.startY = e.pageY
+        this.isClick = true
       }
     })
     document.addEventListener('mouseup', (e) => {
+      this.isClick = false
+      this.$emit('clear')
+      if (this.select && this.select.classList.contains('move')) {
+        this.select.classList.remove('move')
+      }
     })
-  },
-  methods: {
-    calcMoveDistance (e) {
-      this.isClick = true
-      console.log(e.pageX, e.pageY)
-    }
   }
 }
 </script>
@@ -67,6 +86,7 @@ export default {
   top: 0;
   width: 100%;
   height: 4px;
+  z-index: 2;
 }
 .resize-border.left {
   position: absolute;
@@ -74,6 +94,7 @@ export default {
   top: 0;
   width: 4px;
   height: 100%;
+  z-index: 2;
 }
 .resize-border.right {
   position: absolute;
@@ -81,12 +102,14 @@ export default {
   right: 0;
   width: 4px;
   height: 100%;
+  z-index: 2;
 }
 .resize-border.bottom {
   position: absolute;
   bottom: 0;
   width: 100%;
   height: 4px;
+  z-index: 2;
 }
 .resize-border.top:hover {
   cursor: n-resize;
@@ -99,5 +122,8 @@ export default {
 }
 .resize-border.bottom:hover {
   cursor: s-resize;
+}
+.move {
+  pointer-events: none;
 }
 </style>
