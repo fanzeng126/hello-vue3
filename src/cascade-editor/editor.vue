@@ -1,16 +1,12 @@
 <template>
   <div class="box">
-    <input
+    <vt-input
       v-model="label"
-      class="vt-input"
-      type="text"
       ref="input"
       readonly
+      suffix-icon="close"
       @focus="focus"
-      @blur="blur" >
-    <vt-icon
-      icon="down"
-      class="icon-right" />
+      @blur="blur" />
     <cascade-teleport
       v-if="show"
       v-model="firstValue"
@@ -92,7 +88,7 @@ export default {
         label.value = ''
         console.log('timer', timer.value)
         clearTimeout(timer.value)
-        input.value.focus()
+        input.value.vtInput.focus()
       }
     })
     watch(localValue, function (val) {
@@ -160,16 +156,10 @@ export default {
 </script>
 <style lang="postcss" scoped>
 .box {
-  font-size: initial;
+  font-size: 0;
   position: relative;
   display: inline-block;
   top: 20px;
   left: 20px;
-  .icon-right {
-    position:absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 8px;
-  }
 }
 </style>

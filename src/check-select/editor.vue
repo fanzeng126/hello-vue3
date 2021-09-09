@@ -3,7 +3,7 @@
     <vt-input
       v-model="label"
       readonly
-      suffix-icon="down"
+      suffix-icon="close"
       @focus="focus"
       @blur="blur" />
     <vt-popper
