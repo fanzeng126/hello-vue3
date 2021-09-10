@@ -6,33 +6,72 @@
       readonly
       suffix-icon="close"
       @focus="focus"
-      @blur="blur" />
-    <cascade-teleport
-      v-if="show"
-      v-model="firstValue"
-      :options="firstOpitons"
-      :key="new Date()+ '-'+ 'first'"
-      :level="1"/>
-    <cascade-teleport
-      v-if="show && secondOptions.length"
-      v-model="secondValue"
-      :options="secondOptions"
-      :key="new Date()+ '-'+ 'second'"
-      :level="2" />
-    <cascade-teleport
-      v-if="show && thirdOptions.length"
-      v-model="thirdValue"
-      :options="thirdOptions"
-      :key="new Date()+ '-'+ 'third'"
-      :level="3" />
+      @blur="blur"
+      @clear="clear" />
+    <vt-popper
+      :visiable="show"
+      :level="1">
+      <ul>
+        <li
+        v-for="(item) in firstOpitons"
+        :key="item.value"
+        :check="item.value === firstValue"
+        @click="firstValue=item.value">
+          <span>
+            {{ item.label }}
+          </span>
+          <vt-icon
+            v-if="item.children"
+            icon="right"
+            class="icon-right" />
+        </li>
+      </ul>
+    </vt-popper>
+    <vt-popper
+      :visiable="show && !!secondOptions.length"
+      :level="2">
+      <ul>
+        <li
+        v-for="(item) in secondOptions"
+        :key="item.value"
+        :check="item.value === secondValue"
+        @click="secondValue=item.value">
+          <span>
+            {{ item.label }}
+          </span>
+          <vt-icon
+            v-if="item.children"
+            icon="right"
+            class="icon-right" />
+        </li>
+      </ul>
+    </vt-popper>
+    <vt-popper
+      :visiable="show && !!thirdOptions.length"
+      :level="3">
+      <ul>
+        <li
+        v-for="(item) in thirdOptions"
+        :key="item.value"
+        :check="item.value === thirdValue"
+        @click="thirdValue=item.value">
+          <span>
+            {{ item.label }}
+          </span>
+          <vt-icon
+            v-if="item.children"
+            icon="right"
+            class="icon-right" />
+        </li>
+      </ul>
+    </vt-popper>
   </div>
 </template>
 <script>
-import { computed, toRefs, ref, watch, reactive } from 'vue'
-import cascadeTeleport from '../dropdown-teleport/cascade-teleport.vue'
+import { computed, toRefs, ref, watch } from 'vue'
 export default {
   props: {
-    value: {
+    modelValue: {
       type: Array,
       default: () => []
     },
@@ -41,18 +80,15 @@ export default {
       default: () => []
     }
   },
-  emits: ['update:value'],
-  components: {
-    'cascade-teleport': cascadeTeleport
-  },
-  setup (props, context) {
+  emits: ['update:modelValue'],
+  setup (props, { emit }) {
     const firstValue = ref(null)
     const secondValue = ref(null)
     const thirdValue = ref(null)
-    const localValue = reactive([])
+
     const timer = ref(null)
     const input = ref(null)
-    const { value, options } = toRefs(props)
+    const { modelValue, options } = toRefs(props)
     const label = ref('')
 
     const firstOpitons = computed(() => {
@@ -64,7 +100,7 @@ export default {
     })
 
     const secondOptions = computed(() => {
-      return secondFilterValue.value[0] ? secondFilterValue.value[0].children : []
+      return secondFilterValue.value.length && secondFilterValue.value[0]?.children ? secondFilterValue.value[0].children : []
     })
 
     const thirdFilterValue = computed(() => {
@@ -72,58 +108,39 @@ export default {
     })
 
     const thirdOptions = computed(() => {
-      return thirdFilterValue.value[0] ? thirdFilterValue.value[0].children : []
+      return thirdFilterValue.value.length && thirdFilterValue.value[0]?.children ? thirdFilterValue.value[0].children : []
     })
 
     const fouthFilterValue = computed(() => {
       return thirdOptions.value.filter(item => item.value === thirdValue.value)
     })
 
-    watch(value, function (val, oldVal) {
-      localValue.splice(0, localValue.length, ...val)
+    watch(firstValue, function (val) {
+      emit('update:modelValue', [val])
+    })
+
+    watch(secondValue, function (val) {
+      emit('update:modelValue', [firstValue.value, val])
+    })
+
+    watch(thirdValue, function (val) {
+      emit('update:modelValue', [firstValue.value, secondValue.value, val])
+    })
+
+    watch(modelValue, function (val, oldVal) {
       if (val.length === 3) {
-        console.log('三个数据')
         label.value = secondFilterValue.value[0].label + '/' + thirdFilterValue.value[0].label + '/' + fouthFilterValue.value[0].label
-      } else {
+      } else if (val.length) {
         label.value = ''
-        console.log('timer', timer.value)
         clearTimeout(timer.value)
         input.value.vtInput.focus()
+      } else {
+        firstValue.value = null
       }
     })
-    watch(localValue, function (val) {
-      context.emit('update:value', [...val])
-    })
-    watch(firstValue, function (val) {
-      if (localValue[0] !== val) {
-        secondValue.value = null
-        thirdValue.value = null
-        localValue.splice(0, localValue.length)
-      }
-      if (val) {
-        localValue[0] = val
-        console.log('firstValue', val)
-      }
-    })
-    watch(secondValue, function (val) {
-      if (localValue[1] !== val) {
-        thirdValue.value = null
-        localValue.splice(1, localValue.length)
-      }
-      if (val) {
-        localValue[1] = val
-        console.log('secondValue', val)
-      }
-    })
-    watch(thirdValue, function (val) {
-      if (val) {
-        localValue[2] = val
-        console.log('thirdValue', val, localValue)
-      }
-    })
+
     return {
       label,
-      localValue,
       firstValue,
       secondValue,
       thirdValue,
@@ -139,8 +156,6 @@ export default {
       show: false
     }
   },
-  mounted () {
-  },
   methods: {
     focus (val) {
       this.show = true
@@ -149,7 +164,9 @@ export default {
       this.timer = setTimeout(() => {
         this.show = false
       }, 200)
-      console.log('blur', this.timer)
+    },
+    clear () {
+      this.$emit('update:modelValue', [])
     }
   }
 }
@@ -161,5 +178,26 @@ export default {
   display: inline-block;
   top: 20px;
   left: 20px;
+}
+ul {
+  padding: 0;
+  li {
+    position: relative;
+    padding-left: 16px;
+    .icon-right {
+      position:absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 8px;
+    }
+  }
+  li:hover {
+    background: $normalGreyBackground;
+    color: $primaryColor;
+  }
+  li[check=true] {
+    font-weight: 700;
+    color: $primaryColor;
+  }
 }
 </style>

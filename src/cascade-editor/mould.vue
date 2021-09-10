@@ -1,7 +1,7 @@
 <template>
   <div class="cascade">
     <cascade-editor
-      v-model:value="value"
+      v-model="value"
       :options="options" />
   </div>
 </template>

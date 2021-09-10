@@ -49,9 +49,11 @@ export default {
           this.style.left = (((this.level - 1) * width + left) / htmlFontSize) + 'rem'
           this.style.width = (width / htmlFontSize) + 'rem'
           this.style['max-height'] = `${300 / htmlFontSize}rem`
+          this.style.padding = `${5 / htmlFontSize}rem 0`
         })
       } else {
         this.style['max-height'] = '0px'
+        this.style.padding = '0px'
         setTimeout(() => {
           this.show = false
         }, 100)
@@ -67,7 +69,6 @@ export default {
   font-size: $documentFontSize;
   overflow: auto;
   border-radius: $normalBlockBorderRadius;
-  margin-top: $wrapMargin;
   box-shadow: $boxShadowLevel1;
   border: $wrapBorder;
   box-sizing: border-box;
