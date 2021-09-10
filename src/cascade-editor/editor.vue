@@ -1,10 +1,11 @@
 <template>
-  <div class="box">
+  <div class="editor">
     <vt-input
       v-model="label"
       ref="input"
       readonly
-      suffix-icon="close"
+      suffix-icon="down"
+      clearable
       @focus="focus"
       @blur="blur"
       @clear="clear" />
@@ -116,15 +117,22 @@ export default {
     })
 
     watch(firstValue, function (val) {
-      emit('update:modelValue', [val])
+      if (val) {
+        secondValue.value = null
+        thirdValue.value = null
+        emit('update:modelValue', [val])
+      }
     })
 
     watch(secondValue, function (val) {
-      emit('update:modelValue', [firstValue.value, val])
+      if (val) {
+        thirdValue.value = null
+        emit('update:modelValue', [firstValue.value, val])
+      }
     })
 
     watch(thirdValue, function (val) {
-      emit('update:modelValue', [firstValue.value, secondValue.value, val])
+      val && emit('update:modelValue', [firstValue.value, secondValue.value, val])
     })
 
     watch(modelValue, function (val, oldVal) {
@@ -136,6 +144,8 @@ export default {
         input.value.vtInput.focus()
       } else {
         firstValue.value = null
+        secondValue.value = null
+        thirdValue.value = null
       }
     })
 
@@ -172,12 +182,10 @@ export default {
 }
 </script>
 <style lang="postcss" scoped>
-.box {
+.editor {
   font-size: 0;
   position: relative;
   display: inline-block;
-  top: 20px;
-  left: 20px;
 }
 ul {
   padding: 0;

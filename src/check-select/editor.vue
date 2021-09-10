@@ -68,8 +68,8 @@ export default {
 </script>
 <style lang="postcss" scoped>
 .editor {
-  position: relative;
   font-size: 0;
+  position: relative;
   display: inline-block;
 }
 ul {
