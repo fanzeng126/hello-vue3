@@ -1,17 +1,68 @@
 <template>
   <div class="cascade">
-    <cascade-editor
+    <vt-cascade
       v-model="value"
-      :options="options" />
+      :options="options"
+      prefix-icon="search"
+      suffix-icon="down"
+      clearable>
+      <template v-slot:firstLevel="{options}">
+        <ul>
+          <li
+            v-for="(item) in options"
+            :key="item.value"
+            :check="item.value === value[0]"
+            @click="clickFirstLevel(item)">
+            <span>
+              {{ item.label }}
+            </span>
+            <vt-icon
+              v-if="item.children"
+              icon="right"
+              class="icon-right" />
+          </li>
+        </ul>
+      </template>
+      <template v-slot:secondLevel="{options}">
+        <ul>
+          <li
+            v-for="(item) in options"
+            :key="item.value"
+            :check="item.value === value[1]"
+            @click="clickSecondLevel(item)">
+            <span>
+              {{ item.label }}
+            </span>
+            <vt-icon
+              v-if="item.children"
+              icon="right"
+              class="icon-right" />
+          </li>
+        </ul>
+      </template>
+      <template v-slot:thirdLevel="{options}">
+        <ul>
+          <li
+            v-for="(item) in options"
+            :key="item.value"
+            :check="item.value === value[2]"
+            @click="clickThirdLevel(item)">
+            <span>
+              {{ item.label }}
+            </span>
+            <vt-icon
+              v-if="item.children"
+              icon="right"
+              class="icon-right" />
+          </li>
+        </ul>
+      </template>
+    </vt-cascade>
   </div>
 </template>
 
 <script>
-import cascadeEditor from './editor.vue'
 export default {
-  components: {
-    'cascade-editor': cascadeEditor
-  },
   data () {
     return {
       value: [],
@@ -96,13 +147,55 @@ export default {
     }
   },
   watch: {
-    value (val) {
+  },
+  methods: {
+    clickFirstLevel (item) {
+      if (item.value !== this.value[0]) {
+        this.value = [item.value]
+      } else {
+        this.value = [...this.value]
+      }
+    },
+    clickSecondLevel (item) {
+      if (item.value !== this.value[1]) {
+        this.value.splice(1, this.value.length, item.value)
+      } else {
+        this.value = [...this.value]
+      }
+    },
+    clickThirdLevel (item) {
+      if (item.value !== this.value[0]) {
+        this.value.splice(2, this.value.length, item.value)
+      } else {
+        this.value = [...this.value]
+      }
     }
   }
 }
 </script>
 <style lang="postcss" scoped>
 .cascade {
-  font-size: initial;
+  font-size: 0px;
+}
+ul {
+  padding: 0;
+  li {
+    position: relative;
+    padding-left: 16px;
+    .icon-right {
+      position:absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 8px;
+    }
+  }
+  li:hover {
+    background: $normalGreyBackground;
+    color: $primaryColor;
+  }
+  li[check=true] {
+    font-weight: 700;
+    color: $primaryColor;
+  }
 }
 </style>
