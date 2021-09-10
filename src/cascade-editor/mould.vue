@@ -47,13 +47,13 @@
             :key="item.value"
             :check="item.value === value[2]"
             @click="clickThirdLevel(item)">
+            <vt-icon
+              v-if="item.value === value[2]"
+              icon="check"
+              class="icon-left" />
             <span>
               {{ item.label }}
             </span>
-            <vt-icon
-              v-if="item.children"
-              icon="right"
-              class="icon-right" />
           </li>
         </ul>
       </template>
@@ -181,7 +181,14 @@ ul {
   padding: 0;
   li {
     position: relative;
-    padding-left: 16px;
+    padding-left: 32px;
+    .icon-left {
+      position:absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 8px;
+      fill: $primaryColor;
+    }
     .icon-right {
       position:absolute;
       top: 50%;

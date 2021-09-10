@@ -5,6 +5,7 @@ import right from './right.svg'
 import loading from './loading.svg'
 import search from './search.svg'
 import eyes from './eyes.svg'
+import check from 'check.svg'
 
 const icons = {
   close,
@@ -13,7 +14,8 @@ const icons = {
   right,
   loading,
   search,
-  eyes
+  eyes,
+  check
 }
 
 export default icons
