@@ -19,3 +19,8 @@ app.component('vt-input', input)
 const requireAll = requireContext => requireContext.keys().map(requireContext)
 const req = require.context('./svg', false, /\.svg$/)
 requireAll(req)
+
+app.config.globalProperties.$htmlFontSize = () => {
+  const htmlDom = document.documentElement
+  return parseInt(htmlDom.style.fontSize, 10)
+}

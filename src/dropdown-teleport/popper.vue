@@ -38,16 +38,17 @@ export default {
     visiable (newVal) {
       if (newVal) {
         this.show = true
+        const htmlFontSize = this.$htmlFontSize()
         this.$nextTick(() => {
           const {
             top,
             left,
             width
           } = getRectStyle(this.$parent.$el)
-          this.style.top = top + 'px'
-          this.style.left = (this.level - 1) * width + left + 'px'
-          this.style.width = width + 'px'
-          this.style['max-height'] = '300px'
+          this.style.top = (top / htmlFontSize) + 'rem'
+          this.style.left = (((this.level - 1) * width + left) / htmlFontSize) + 'rem'
+          this.style.width = (width / htmlFontSize) + 'rem'
+          this.style['max-height'] = `${300 / htmlFontSize}rem`
         })
       } else {
         this.style['max-height'] = '0px'

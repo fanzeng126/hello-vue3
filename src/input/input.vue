@@ -224,10 +224,12 @@ export default {
   },
   watch: {
     width (val) {
-      this.vtInput.style.width = `${val}px`
+      const htmlFontSize = this.$htmlFontSize()
+      this.vtInput.style.width = `${val / htmlFontSize}rem`
     },
     height (val) {
-      this.vtInput.style.height = `${val}px`
+      const htmlFontSize = this.$htmlFontSize()
+      this.vtInput.style.height = `${val / htmlFontSize}rem`
     }
   },
   methods: {
