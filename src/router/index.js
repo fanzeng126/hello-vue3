@@ -18,6 +18,7 @@ import slotParent from '../v-slot/parent.vue'
 import button from '../button/index.vue'
 import input from '../input/index.vue'
 import resize from '../resize-box/index.vue'
+import multiple from '../cascade-editor/multiple.vue'
 
 const routes = [
   {
@@ -114,6 +115,11 @@ const routes = [
     path: '/resize',
     name: 'resize',
     component: resize
+  },
+  {
+    path: '/multiple',
+    name: 'multiple',
+    component: multiple
   }
 ]
 

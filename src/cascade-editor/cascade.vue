@@ -97,13 +97,17 @@ export default {
     iconClass: {
       type: String,
       default: ''
+    },
+    separator: {
+      type: String,
+      default: '/'
     }
   },
   emits: ['update:modelValue'],
   setup (props, { emit }) {
     const timer = ref(null)
     const input = ref(null)
-    const { modelValue, options } = toRefs(props)
+    const { modelValue, options, separator } = toRefs(props)
     const label = ref('')
 
     const firstOpitons = computed(() => {
@@ -115,7 +119,7 @@ export default {
     })
 
     const secondOptions = computed(() => {
-      return secondFilterValue.value.length && secondFilterValue.value[0]?.children ? secondFilterValue.value[0].children : []
+      return secondFilterValue.value.length && !secondFilterValue.value[0]?.isLeaf ? secondFilterValue.value[0].children : []
     })
 
     const thirdFilterValue = computed(() => {
@@ -123,7 +127,7 @@ export default {
     })
 
     const thirdOptions = computed(() => {
-      return thirdFilterValue.value.length && thirdFilterValue.value[0]?.children ? thirdFilterValue.value[0].children : []
+      return thirdFilterValue.value.length && !thirdFilterValue.value[0]?.isLeaf ? thirdFilterValue.value[0].children : []
     })
 
     const fouthFilterValue = computed(() => {
@@ -132,7 +136,7 @@ export default {
 
     watch(() => [...modelValue.value], function (val, oldVal) {
       if (val.length === 3) {
-        label.value = secondFilterValue.value[0].label + '/' + thirdFilterValue.value[0].label + '/' + fouthFilterValue.value[0].label
+        label.value = secondFilterValue.value[0].label + separator.value + thirdFilterValue.value[0].label + separator.value + fouthFilterValue.value[0].label
       } else if (val.length) {
         label.value = ''
         clearTimeout(timer.value)

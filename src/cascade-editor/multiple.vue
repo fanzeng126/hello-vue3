@@ -13,11 +13,16 @@
             :key="item.value"
             :check="item.value === value[0]"
             @click="clickFirstLevel(item)">
+            <input
+              type="checkbox"
+              :checked="item.check"
+              @change="changeFirstLevel(item)"
+              class="icon-left">
             <span>
               {{ item.label }}
             </span>
             <vt-icon
-              v-if="item.children"
+              v-if="!item.isLeaf"
               icon="right"
               class="icon-right" />
           </li>
@@ -30,11 +35,16 @@
             :key="item.value"
             :check="item.value === value[1]"
             @click="clickSecondLevel(item)">
+            <input
+              type="checkbox"
+              :checked="item.check"
+              @change="changeSecondLevel(item)"
+              class="icon-left">
             <span>
               {{ item.label }}
             </span>
             <vt-icon
-              v-if="item.children"
+              v-if="!item.isLeaf"
               icon="right"
               class="icon-right" />
           </li>
@@ -47,10 +57,11 @@
             :key="item.value"
             :check="item.value === value[2]"
             @click="clickThirdLevel(item)">
-            <vt-icon
-              v-if="item.value === value[2]"
-              icon="check"
-              class="icon-left" />
+            <input
+              v-if="!item.isLeaf"
+              type="checkbox"
+              class="icon-left"
+              :checked="item.check">
             <span>
               {{ item.label }}
             </span>
@@ -155,10 +166,18 @@ export default {
   },
   methods: {
     clickFirstLevel (item) {
+      console.log('clickFirstLevel', item)
       if (item.value !== this.value[0]) {
         this.value = [item.value]
       } else {
         this.value = [...this.value]
+      }
+    },
+    changeFirstLevel (item) {
+      if (!item.isLeaf) {
+        item.children.forEach(element => {
+          element.check = event.target.checked
+        })
       }
     },
     clickSecondLevel (item) {
@@ -167,6 +186,9 @@ export default {
       } else {
         this.value = [...this.value]
       }
+    },
+    changeSecondLevel (item) {
+
     },
     clickThirdLevel (item) {
       if (item.value !== this.value[0]) {
