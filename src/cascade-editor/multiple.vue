@@ -1,8 +1,10 @@
 <template>
   <div class="cascade">
     <vt-cascade
+      ref="cascade"
       v-model="value"
       :options="options"
+      :label="label"
       prefix-icon="search"
       suffix-icon="down"
       clearable>
@@ -60,7 +62,8 @@
             <input
               type="checkbox"
               :checked="item.check"
-              class="icon-left">
+              class="icon-left"
+              @change="changeThirdLevel(item)">
             <span>
               {{ item.label }}
             </span>
@@ -72,134 +75,158 @@
 </template>
 
 <script>
+import { ref, computed, watch, reactive } from 'vue'
+import data from './data'
 export default {
-  data () {
-    return {
-      value: [],
-      options: [
-        {
-          value: 1,
-          label: '一年级',
-          isLeaf: false,
-          children: [
-            { value: 11, label: '一班', isLeaf: true },
-            { value: 12, label: '二班', isLeaf: true },
-            { value: 13, label: '三班', isLeaf: true },
-            { value: 14, label: '四班', isLeaf: true },
-            { value: 15, label: '五班', isLeaf: true },
-            { value: 16, label: '六班', isLeaf: true },
-            { value: 17, label: '七班', isLeaf: true },
-            { value: 18, label: '八班', isLeaf: true },
-            {
-              value: 19,
-              label: '九班',
-              isLeaf: false,
-              children: [
-                { value: 111, label: '小李', isLeaf: true },
-                { value: 112, label: '小明', isLeaf: true },
-                { value: 113, label: '小张', isLeaf: true },
-                { value: 114, label: '小华', isLeaf: true }
-              ]
-            },
-            { value: 191, label: '十班', isLeaf: true },
-            { value: 192, label: '十一班', isLeaf: true },
-            { value: 193, label: '十二班', isLeaf: true },
-            { value: 194, label: '十三班', isLeaf: true },
-            { value: 195, label: '十四班', isLeaf: true }
-          ]
-        },
-        {
-          value: 2,
-          label: '二年级',
-          isLeaf: false,
-          children: [
-            { value: 21, label: '一班', isLeaf: true },
-            { value: 22, label: '二班', isLeaf: true },
-            { value: 23, label: '三班', isLeaf: true },
-            { value: 24, label: '四班', isLeaf: true },
-            { value: 25, label: '五班', isLeaf: true },
-            { value: 26, label: '六班', isLeaf: true },
-            {
-              value: 27,
-              label: '七班',
-              isLeaf: false,
-              children: [
-                { value: 271, label: '叶李', isLeaf: true },
-                { value: 272, label: '叶明', isLeaf: true },
-                { value: 273, label: '叶张', isLeaf: true },
-                { value: 274, label: '叶华', isLeaf: true }
-              ]
-            },
-            {
-              value: 28,
-              label: '八班',
-              isLeaf: false,
-              children: [
-                { value: 281, label: '范李', isLeaf: true },
-                { value: 282, label: '范明', isLeaf: true },
-                { value: 283, label: '范张', isLeaf: true },
-                { value: 284, label: '范华', isLeaf: true }
-              ]
-            }
-          ]
-        },
-        { value: 3, label: '三年级', isLeaf: true },
-        { value: 4, label: '四年级', isLeaf: true },
-        { value: 5, label: '五年级', isLeaf: true },
-        { value: 6, label: '六年级', isLeaf: true },
-        { value: 7, label: '七年级', isLeaf: true },
-        { value: 8, label: '初一年级', isLeaf: true },
-        { value: 9, label: '初二年级', isLeaf: true },
-        { value: 10, label: '初三年级', isLeaf: true },
-        { value: 11, label: '高一年级', isLeaf: true },
-        { value: 12, label: '高二年级', isLeaf: true },
-        { value: 13, label: '高三年级', isLeaf: true },
-        { value: 14, label: '大一年级', isLeaf: true },
-        { value: 15, label: '大二年级', isLeaf: true },
-        { value: 16, label: '大三年级', isLeaf: true },
-        { value: 17, label: '大四年级', isLeaf: true }
-      ]
+  props: {
+    separator: {
+      type: String,
+      default: '/'
     }
   },
-  watch: {
+  setup (props) {
+    // const { separator } = toRefs(props)
+    const cascade = ref(null)
+    const labels = reactive({})
+    const value = ref([])
+
+    const label = computed(() => '')
+
+    watch(labels, function (val) {
+      console.log('labels', val)
+    })
+
+    return {
+      cascade,
+      labels,
+      value,
+      label
+    }
   },
+  mixins: [data],
   methods: {
     clickFirstLevel (item) {
-      console.log('clickFirstLevel', item)
       if (item.value !== this.value[0]) {
-        this.value = [item.value]
-      } else {
-        this.value = [...this.value]
+        this.value.splice(0, this.value.length, item.value)
       }
+      this.cascade.clearTimeOutAndFocus()
     },
     changeFirstLevel (item) {
+      const tempLabels = {}
+      const checkVal = event.target.checked
+      item.check = checkVal
       if (!item.isLeaf) {
-        console.log('changeFirstLevel', item)
         item.children.forEach(element => {
-          element.check = event.target.checked
-          this.changeFirstLevel(element)
+          element.check = checkVal
+          tempLabels[element.value] = { label: element.label, children: {} }
+          if (!element.isLeaf) {
+            element.children.forEach(cell => {
+              cell.check = checkVal
+              if (checkVal) {
+                if (element.value in tempLabels) {
+                  tempLabels[element.value].children[cell.value] = { label: cell.label }
+                }
+              }
+            })
+          }
         })
+      }
+      if (checkVal) {
+        this.labels[item.value] = { children: tempLabels, label: item.label }
+      } else {
+        delete this.labels[item.value]
       }
     },
     clickSecondLevel (item) {
       if (item.value !== this.value[1]) {
         this.value.splice(1, this.value.length, item.value)
-      } else {
-        this.value = [...this.value]
       }
+      this.cascade.clearTimeOutAndFocus()
     },
     changeSecondLevel (item) {
+      const checkVal = event.target.checked
+      item.check = checkVal
+      let tempLabels = { children: [], label: item.label }
       if (!item.isLeaf) {
         item.children.forEach(element => {
-          element.check = event.target.checked
+          element.check = checkVal
+          if (checkVal) {
+            if ('children' in tempLabels) {
+              tempLabels.children[element.value] = { label: element.label }
+            } else {
+              tempLabels = { children: { [element.value]: { label: element.label } }, label: item.label }
+            }
+          }
         })
+      }
+      // 找到父节点一个节点
+      const parentFilter = this.options.filter(item => item.value === this.value[0])
+      if (parentFilter.length) {
+        const { check: parentCheck, value: parentValue, label: parentLabel } = parentFilter[0]
+        if (parentCheck) {
+          if (this.labels[parentValue] && this.labels[parentValue].children) {
+            if (checkVal) {
+              this.labels[parentValue].children[item.value] = tempLabels
+            } else {
+              delete this.labels[parentValue].children[item.value]
+              if (!Array.from(Object.keys(this.labels[parentValue].children)).length) {
+                parentFilter[0].check = false
+                delete this.labels[parentValue]
+              }
+            }
+          }
+        } else {
+          if (checkVal) {
+            parentFilter[0].check = true
+            this.labels[parentValue] = { label: parentLabel, children: { [item.value]: tempLabels } }
+          }
+        }
       }
     },
     clickThirdLevel (item) {
       if (item.value !== this.value[0]) {
         this.value.splice(2, this.value.length, item.value)
-      } else {
-        this.value = [...this.value]
+      }
+    },
+    changeThirdLevel (item) {
+      const checkVal = event.target.checked
+      item.check = checkVal
+      // 第一层
+      const grandParentFilter = this.options.filter(ele => ele.value === this.value[0])
+      if (grandParentFilter.length) {
+        const { check: grandCheck, value: grandValue, label: grandLabel, children: grandChildren } = grandParentFilter[0]
+        const parentFilter = grandChildren.filter(ele => ele.value === this.value[1])
+        if (parentFilter.length) {
+          const { check: parentCheck, value: parentValue, label: parentLabel } = parentFilter[0]
+          if (grandCheck) {
+            if (parentCheck) {
+              if (checkVal) {
+                this.labels[grandValue].children[parentValue].children[item.value] = { label: item.label }
+              } else {
+                if (this.labels[grandValue].children[parentValue].children[item.value]) {
+                  delete this.labels[grandValue].children[parentValue].children[item.value]
+                  if (!Array.from(Object.keys(this.labels[grandValue].children[parentValue].children)).length) {
+                    parentFilter[0].check = false
+                    delete this.labels[grandValue].children[parentValue]
+                  }
+                  if (!Array.from(Object.keys(this.labels[grandValue].children)).length) {
+                    grandParentFilter[0].check = false
+                    delete this.labels[grandValue]
+                  }
+                }
+              }
+            } else {
+              if (checkVal) {
+                this.labels[grandValue].children[parentValue] = { children: { [item.value]: { label: item.label } }, label: parentLabel }
+                parentFilter[0].check = true
+              }
+            }
+          } else {
+            this.labels[grandValue] = { children: { [parentValue]: { children: { [item.value]: { label: item.label } }, label: parentLabel } }, label: grandLabel }
+            parentFilter[0].check = true
+            grandParentFilter[0].check = true
+          }
+        }
       }
     }
   }

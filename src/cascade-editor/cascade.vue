@@ -175,7 +175,7 @@ export default {
     },
     blur (e) {
       this.timer = setTimeout(() => {
-        this.show = false
+        // this.show = false
       }, 200)
     },
     clear () {

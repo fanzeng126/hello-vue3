@@ -65,8 +65,8 @@
 </template>
 
 <script>
-import data from './data'
 import { ref, toRefs, computed } from 'vue'
+import data from './data'
 export default {
   props: {
     multiple: { // 是否可以多选
