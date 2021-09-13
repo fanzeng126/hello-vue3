@@ -1,7 +1,7 @@
 <template>
   <div class="editor">
     <vt-input
-      v-model="label"
+      v-model="value"
       ref="input"
       :placeholder="placeholder"
       :clearable="clearable"
@@ -16,6 +16,9 @@
       @focus="focus"
       @blur="blur"
       @clear="clear" />
+    <div v-if="false">
+      {{ value }}
+    </div>
     <vt-popper
       :visiable="show"
       :level="1">
@@ -98,17 +101,33 @@ export default {
       type: String,
       default: ''
     },
-    separator: {
-      type: String,
-      default: '/'
+    label: {
+      type: [Array, String]
     }
   },
-  emits: ['update:modelValue'],
+  emits: ['update:modelValue', 'clear'],
   setup (props, { emit }) {
     const timer = ref(null)
     const input = ref(null)
-    const { modelValue, options, separator } = toRefs(props)
-    const label = ref('')
+    const value = ref('')
+
+    const {
+      modelValue,
+      options,
+      label,
+      separator
+    } = toRefs(props)
+
+    if (Array.isArray(label)) {
+      watch(() => [...label.value], function (newVal) {
+        value.value = newVal.join(separator.value)
+      })
+    } else {
+      value.value = label.value
+      watch(label, function (newVal) {
+        value.value = newVal
+      })
+    }
 
     const firstOpitons = computed(() => {
       return options.value
@@ -130,27 +149,19 @@ export default {
       return thirdFilterValue.value.length && !thirdFilterValue.value[0]?.isLeaf ? thirdFilterValue.value[0].children : []
     })
 
-    const fouthFilterValue = computed(() => {
-      return thirdOptions.value.filter(item => item.value === modelValue.value[2])
-    })
-
-    watch(() => [...modelValue.value], function (val, oldVal) {
-      if (val.length === 3) {
-        label.value = secondFilterValue.value[0].label + separator.value + thirdFilterValue.value[0].label + separator.value + fouthFilterValue.value[0].label
-      } else if (val.length) {
-        label.value = ''
-        clearTimeout(timer.value)
-        input.value.vtInput.focus()
-      }
-    })
+    const clearTimeOutAndFocus = function () {
+      clearTimeout(timer.value)
+      input.value.vtInput.focus()
+    }
 
     return {
-      label,
       firstOpitons,
       secondOptions,
       thirdOptions,
       timer,
-      input
+      input,
+      value,
+      clearTimeOutAndFocus
     }
   },
   data () {
@@ -168,7 +179,7 @@ export default {
       }, 200)
     },
     clear () {
-      this.$emit('update:modelValue', [])
+      this.$emit('clear', [])
     }
   }
 }

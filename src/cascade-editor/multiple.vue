@@ -58,10 +58,9 @@
             :check="item.value === value[2]"
             @click="clickThirdLevel(item)">
             <input
-              v-if="!item.isLeaf"
               type="checkbox"
-              class="icon-left"
-              :checked="item.check">
+              :checked="item.check"
+              class="icon-left">
             <span>
               {{ item.label }}
             </span>
@@ -175,8 +174,10 @@ export default {
     },
     changeFirstLevel (item) {
       if (!item.isLeaf) {
+        console.log('changeFirstLevel', item)
         item.children.forEach(element => {
           element.check = event.target.checked
+          this.changeFirstLevel(element)
         })
       }
     },
@@ -188,7 +189,11 @@ export default {
       }
     },
     changeSecondLevel (item) {
-
+      if (!item.isLeaf) {
+        item.children.forEach(element => {
+          element.check = event.target.checked
+        })
+      }
     },
     clickThirdLevel (item) {
       if (item.value !== this.value[0]) {
