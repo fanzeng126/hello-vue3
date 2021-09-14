@@ -7,7 +7,8 @@
       :label="label"
       prefix-icon="search"
       suffix-icon="down"
-      clearable>
+      clearable
+      @clear="clear">
       <template v-slot:firstLevel="{options}">
         <ul>
           <li
@@ -123,7 +124,6 @@ const findCheckNode = function (ast, separator) {
       }
     }
   }
-  console.log(arr)
   return arr
 }
 
@@ -155,8 +155,10 @@ export default {
     }
   },
   mixins: [data],
-  mounted () {
-    creatAst(this.ast, this.options)
+  watch: {
+    options (val) {
+      creatAst(this.ast, val)
+    }
   },
   methods: {
     clickFirstLevel (item) {
@@ -233,6 +235,10 @@ export default {
         parentNode.originalData.check = checkVal
         grandParentNode.originalData.check = checkVal
       }
+    },
+    clear () {
+      this.value.splice(0, this.value.length)
+      this.getData() // 这里需要修改
     }
   }
 }
