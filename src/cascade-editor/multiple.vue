@@ -77,6 +77,27 @@
 <script>
 import { ref, computed, watch, reactive } from 'vue'
 import data from './data'
+import { useAst } from '../utils/ast'
+
+const creatAst = function (ast, options) {
+  useAst(1, '', '', ast, ...options)
+  for (const key in ast) {
+    if (!ast[key].isLeaf) {
+      const children = ast[key].children
+      ast[key].children = {}
+      useAst(2, key, '', ast[key].children, ...children)
+      for (const cell in ast[key].children) {
+        if (!ast[key].children[cell].isLeaf) {
+          const data = ast[key].children[cell].children
+          ast[key].children[cell].children = {}
+          useAst(3, cell, key, ast[key].children[cell].children, ...data)
+        }
+      }
+    }
+  }
+  console.log(ast)
+}
+
 export default {
   props: {
     separator: {
@@ -87,23 +108,28 @@ export default {
   setup (props) {
     // const { separator } = toRefs(props)
     const cascade = ref(null)
-    const labels = reactive({})
     const value = ref([])
+    const ast = reactive({}) // 抽象语法树
+    const labels = reactive({})
 
     const label = computed(() => '')
 
-    watch(labels, function (val) {
-      console.log('labels', val)
+    watch(ast, function (val) {
+      console.log('ast', val)
     })
 
     return {
       cascade,
       labels,
       value,
-      label
+      label,
+      ast
     }
   },
   mixins: [data],
+  mounted () {
+    creatAst(this.ast, this.options)
+  },
   methods: {
     clickFirstLevel (item) {
       if (item.value !== this.value[0]) {
@@ -112,29 +138,19 @@ export default {
       this.cascade.clearTimeOutAndFocus()
     },
     changeFirstLevel (item) {
-      const tempLabels = {}
       const checkVal = event.target.checked
       item.check = checkVal
-      if (!item.isLeaf) {
-        item.children.forEach(element => {
-          element.check = checkVal
-          tempLabels[element.value] = { label: element.label, children: {} }
-          if (!element.isLeaf) {
-            element.children.forEach(cell => {
-              cell.check = checkVal
-              if (checkVal) {
-                if (element.value in tempLabels) {
-                  tempLabels[element.value].children[cell.value] = { label: cell.label }
-                }
-              }
-            })
+      const { isLeaf, children } = this.ast[item.value]
+      if (!isLeaf) {
+        for (const key in children) {
+          children[key].originalData.check = checkVal
+          const { isLeaf: childIsLeaf, children: childChildren } = children[key]
+          if (!childIsLeaf) {
+            for (const cell in childChildren) {
+              childChildren[cell].originalData.check = checkVal
+            }
           }
-        })
-      }
-      if (checkVal) {
-        this.labels[item.value] = { children: tempLabels, label: item.label }
-      } else {
-        delete this.labels[item.value]
+        }
       }
     },
     clickSecondLevel (item) {
@@ -146,87 +162,48 @@ export default {
     changeSecondLevel (item) {
       const checkVal = event.target.checked
       item.check = checkVal
-      let tempLabels = { children: [], label: item.label }
-      if (!item.isLeaf) {
-        item.children.forEach(element => {
-          element.check = checkVal
-          if (checkVal) {
-            if ('children' in tempLabels) {
-              tempLabels.children[element.value] = { label: element.label }
-            } else {
-              tempLabels = { children: { [element.value]: { label: element.label } }, label: item.label }
-            }
-          }
-        })
-      }
-      // 找到父节点一个节点
-      const parentFilter = this.options.filter(item => item.value === this.value[0])
-      if (parentFilter.length) {
-        const { check: parentCheck, value: parentValue, label: parentLabel } = parentFilter[0]
-        if (parentCheck) {
-          if (this.labels[parentValue] && this.labels[parentValue].children) {
-            if (checkVal) {
-              this.labels[parentValue].children[item.value] = tempLabels
-            } else {
-              delete this.labels[parentValue].children[item.value]
-              if (!Array.from(Object.keys(this.labels[parentValue].children)).length) {
-                parentFilter[0].check = false
-                delete this.labels[parentValue]
-              }
-            }
-          }
-        } else {
-          if (checkVal) {
-            parentFilter[0].check = true
-            this.labels[parentValue] = { label: parentLabel, children: { [item.value]: tempLabels } }
-          }
+      const parentNode = this.ast[this.value[0]]
+      const currentNode = parentNode.children[item.value]
+      const { isLeaf, children } = currentNode
+      const { children: parentChildren } = parentNode
+      if (!isLeaf) {
+        for (const key in children) {
+          children[key].originalData.check = checkVal
         }
+      }
+      // 父节点为选中，当前节点不选中时，需要判断，父节点是否还有其他子节点选中，再做判断是否更改父节点状态
+      if (parentNode.originalData.check && !checkVal) {
+        const filter = Array.from(Object.values(parentChildren)).filter(item => item.originalData.check)
+        parentNode.originalData.check = !!filter.length
+      } else {
+        parentNode.originalData.check = checkVal
       }
     },
     clickThirdLevel (item) {
       if (item.value !== this.value[0]) {
         this.value.splice(2, this.value.length, item.value)
       }
+      this.cascade.clearTimeOutAndFocus()
     },
     changeThirdLevel (item) {
       const checkVal = event.target.checked
       item.check = checkVal
-      // 第一层
-      const grandParentFilter = this.options.filter(ele => ele.value === this.value[0])
-      if (grandParentFilter.length) {
-        const { check: grandCheck, value: grandValue, label: grandLabel, children: grandChildren } = grandParentFilter[0]
-        const parentFilter = grandChildren.filter(ele => ele.value === this.value[1])
-        if (parentFilter.length) {
-          const { check: parentCheck, value: parentValue, label: parentLabel } = parentFilter[0]
-          if (grandCheck) {
-            if (parentCheck) {
-              if (checkVal) {
-                this.labels[grandValue].children[parentValue].children[item.value] = { label: item.label }
-              } else {
-                if (this.labels[grandValue].children[parentValue].children[item.value]) {
-                  delete this.labels[grandValue].children[parentValue].children[item.value]
-                  if (!Array.from(Object.keys(this.labels[grandValue].children[parentValue].children)).length) {
-                    parentFilter[0].check = false
-                    delete this.labels[grandValue].children[parentValue]
-                  }
-                  if (!Array.from(Object.keys(this.labels[grandValue].children)).length) {
-                    grandParentFilter[0].check = false
-                    delete this.labels[grandValue]
-                  }
-                }
-              }
-            } else {
-              if (checkVal) {
-                this.labels[grandValue].children[parentValue] = { children: { [item.value]: { label: item.label } }, label: parentLabel }
-                parentFilter[0].check = true
-              }
-            }
-          } else {
-            this.labels[grandValue] = { children: { [parentValue]: { children: { [item.value]: { label: item.label } }, label: parentLabel } }, label: grandLabel }
-            parentFilter[0].check = true
-            grandParentFilter[0].check = true
-          }
+
+      const grandParentNode = this.ast[this.value[0]]
+      const parentNode = grandParentNode.children[this.value[1]]
+      const { children: parentChildren } = parentNode
+      const { children: grandParentChildren } = grandParentNode
+
+      if (parentNode.originalData.check && !checkVal) {
+        const filter = Array.from(Object.values(parentChildren)).filter(item => item.originalData.check)
+        parentNode.originalData.check = !!filter.length
+        if (!filter.length) {
+          const grandFilter = Array.from(Object.values(grandParentChildren)).filter(item => item.originalData.check)
+          grandParentNode.originalData.check = !!grandFilter.length
         }
+      } else {
+        parentNode.originalData.check = checkVal
+        grandParentNode.originalData.check = checkVal
       }
     }
   }
