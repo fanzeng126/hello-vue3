@@ -13,11 +13,25 @@
       :name="name"
       :resize="resize"
       :icon-class="iconClass"
+      :div-height="divHeight"
       @focus="focus"
       @blur="blur"
       @clear="clear" />
-    <div v-if="false">
-      {{ value }}
+    <div
+      v-if="!!labels.length"
+      class="cascader__tags"
+      @click="clickDiv">
+        <span
+          v-for="(item, index) in labels"
+          :key="new Date()+'_'+index">
+          <span>
+            {{ item }}
+          </span>
+          <vt-icon
+            icon="close"
+            class="icon-right"
+            @click="close"/>
+        </span>
     </div>
     <vt-popper
       :visiable="show"
@@ -110,24 +124,26 @@ export default {
     const timer = ref(null)
     const input = ref(null)
     const value = ref('')
+    const labels = ref([])
 
     const {
       modelValue,
       options,
-      label,
-      separator
+      label
     } = toRefs(props)
 
-    if (Array.isArray(label)) {
-      watch(() => [...label.value], function (newVal) {
-        value.value = newVal.join(separator.value)
-      })
-    } else {
+    if (!Array.isArray(label.value)) {
       value.value = label.value
       watch(label, function (newVal) {
         value.value = newVal
       })
+    } else {
+      labels.value = label.value
     }
+
+    const divHeight = computed(() => {
+      return labels.value.length * 24 + 8 + 2 * (labels.value.length - 1)
+    })
 
     const firstOpitons = computed(() => {
       return options.value
@@ -161,7 +177,9 @@ export default {
       timer,
       input,
       value,
-      clearTimeOutAndFocus
+      clearTimeOutAndFocus,
+      labels,
+      divHeight
     }
   },
   data () {
@@ -175,11 +193,16 @@ export default {
     },
     blur (e) {
       this.timer = setTimeout(() => {
-        // this.show = false
+        this.show = false
       }, 200)
     },
     clear () {
       this.$emit('clear', [])
+    },
+    close () {
+    },
+    clickDiv () {
+      this.clearTimeOutAndFocus()
     }
   }
 }
@@ -189,5 +212,51 @@ export default {
   font-size: 0;
   position: relative;
   display: inline-block;
+}
+.cascader__tags {
+  position: absolute;
+  top: 1px;
+  left: $inputElementPaddingX;
+  right: 30px;
+  font-size: $documentFontSize;
+  display: flex;
+  line-height: 22px;
+  flex-wrap: wrap;
+  background: #fff;
+  & > span {
+    display: inline-flex;
+    position: relative;
+    text-overflow: ellipsis;
+    background: #f0f2f5;
+    margin-bottom: 2px;
+    max-width: 100%;
+    margin-right: 6px;
+    height: 24px;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 0 30px 0 4px;
+    border-color: transparent;
+    border-radius: var(--mu-block-border-radius);
+    cursor: pointer;
+    border: $inputBorder;
+    box-sizing: border-box;
+    .icon-right {
+      position:absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 8px;
+    }
+    & > span {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+  & > span:last-child {
+    margin-bottom: 0;
+  }
+  & > span:first-child {
+    margin-top: 3px;
+  }
 }
 </style>

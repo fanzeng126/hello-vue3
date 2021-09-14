@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import { ref, computed, watch, reactive } from 'vue'
+import { ref, watch, reactive, toRefs } from 'vue'
 import data from './data'
 import { useAst } from '../utils/ast'
 
@@ -95,7 +95,36 @@ const creatAst = function (ast, options) {
       }
     }
   }
-  console.log(ast)
+}
+
+const findCheckNode = function (ast, separator) {
+  const arr = []
+  for (const key1 in ast) {
+    const level1 = ast[key1]
+    if (level1.originalData.check === true) {
+      if (level1.isLeaf === false) {
+        const parentNode = level1.children
+        for (const key2 in parentNode) {
+          const level2 = parentNode[key2]
+          if (level2.originalData.check === true) {
+            if (level2.isLeaf === false) {
+              const child = level2.children
+              for (const key3 in child) {
+                const level3 = child[key3]
+                if (level3.originalData.check === true) arr.push(level1.label + separator.value + level2.label + separator.value + level3.label)
+              }
+            } else {
+              arr.push(level1.label + '/' + level2.label)
+            }
+          }
+        }
+      } else {
+        arr.push(level1.label)
+      }
+    }
+  }
+  console.log(arr)
+  return arr
 }
 
 export default {
@@ -106,16 +135,15 @@ export default {
     }
   },
   setup (props) {
-    // const { separator } = toRefs(props)
+    const { separator } = toRefs(props)
     const cascade = ref(null)
     const value = ref([])
     const ast = reactive({}) // 抽象语法树
     const labels = reactive({})
-
-    const label = computed(() => '')
+    const label = ref([])
 
     watch(ast, function (val) {
-      console.log('ast', val)
+      label.value.splice(0, label.value.length, ...findCheckNode(val, separator))
     })
 
     return {

@@ -162,6 +162,9 @@ export default {
     iconClass: {
       type: String,
       default: ''
+    },
+    divHeight: {
+      type: Number
     }
   },
   emits: [
@@ -230,6 +233,15 @@ export default {
     height (val) {
       const htmlFontSize = this.$htmlFontSize()
       this.vtInput.style.height = `${val / htmlFontSize}rem`
+    },
+    divHeight (val) {
+      if (val > this.height) {
+        const htmlFontSize = this.$htmlFontSize()
+        this.vtInput.style.height = `${val / htmlFontSize}rem`
+      } else {
+        const htmlFontSize = this.$htmlFontSize()
+        this.vtInput.style.height = `${this.height / htmlFontSize}rem`
+      }
     }
   },
   methods: {
