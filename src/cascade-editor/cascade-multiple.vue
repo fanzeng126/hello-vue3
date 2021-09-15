@@ -1,9 +1,9 @@
 <template>
   <div class="cascade">
-    <vt-cascade
+    <vt-cascade-popper
       ref="cascade"
       v-model="value"
-      :options="options"
+      :options="dataArr"
       :label="label"
       prefix-icon="search"
       suffix-icon="down"
@@ -71,13 +71,13 @@
           </li>
         </ul>
       </template>
-    </vt-cascade>
+    </vt-cascade-popper>
   </div>
 </template>
 
 <script>
+import clonedeep from 'lodash.clonedeep'
 import { ref, watch, reactive, toRefs } from 'vue'
-import data from './data'
 import { useAst } from '../utils/ast'
 
 const creatAst = function (ast, options) {
@@ -129,24 +129,32 @@ const findCheckNode = function (ast, separator) {
 
 export default {
   props: {
+    options: {
+      type: Array,
+      default: () => []
+    },
     separator: {
       type: String,
       default: '/'
     }
   },
   setup (props) {
-    const { separator } = toRefs(props)
+    const { separator, options } = toRefs(props)
     const cascade = ref(null)
     const value = ref([])
     const ast = reactive({}) // 抽象语法树
     const labels = reactive({})
     const label = ref([])
 
+    const dataArr = ref([])
+    dataArr.value = clonedeep(options.value)
+
     watch(ast, function (val) {
       label.value.splice(0, label.value.length, ...findCheckNode(val, separator))
     })
 
     return {
+      dataArr,
       cascade,
       labels,
       value,
@@ -154,9 +162,11 @@ export default {
       ast
     }
   },
-  mixins: [data],
   watch: {
     options (val) {
+      this.dataArr = clonedeep(val)
+    },
+    dataArr (val) {
       creatAst(this.ast, val)
     }
   },
@@ -238,7 +248,7 @@ export default {
     },
     clear () {
       this.value.splice(0, this.value.length)
-      this.getData() // 这里需要修改
+      this.dataArr = clonedeep(this.options)
     }
   }
 }

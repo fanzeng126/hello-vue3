@@ -6,7 +6,9 @@ import vtIcon from './svg/vt-icon.vue'
 import popper from './dropdown-teleport/popper.vue'
 import resizeBox from './resize-box/resize-box.vue'
 import input from './input/input.vue'
+import cascadePopper from './cascade-editor/cascade-popper.vue'
 import cascade from './cascade-editor/cascade.vue'
+import cascadeMultiple from './cascade-editor/cascade-multiple.vue'
 import '../static/css/index'
 import './resetFont'
 
@@ -16,7 +18,9 @@ app.component('vt-icon', vtIcon)
 app.component('vt-popper', popper)
 app.component('vt-resize', resizeBox)
 app.component('vt-input', input)
+app.component('vt-cascade-popper', cascadePopper)
 app.component('vt-cascade', cascade)
+app.component('vt-cascade-multiple', cascadeMultiple)
 
 const requireAll = requireContext => requireContext.keys().map(requireContext)
 const req = require.context('./svg', false, /\.svg$/)

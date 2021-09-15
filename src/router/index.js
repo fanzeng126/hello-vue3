@@ -10,7 +10,6 @@ import focus from '../directive/auto-focus.vue'
 import table from '../table/index.vue'
 import model from '../check-select/model.vue'
 import postcss from '../postcss/index.vue'
-import cascadeEditor from '../cascade-editor/mould.vue'
 import realMould from '../real-cascade/mould.vue'
 import setArray from '../set-up-array/index.vue'
 import vSwitch from '../switch/index.vue'
@@ -18,7 +17,7 @@ import slotParent from '../v-slot/parent.vue'
 import button from '../button/index.vue'
 import input from '../input/index.vue'
 import resize from '../resize-box/index.vue'
-import multiple from '../cascade-editor/multiple.vue'
+import all from '../cascade-editor/index.vue'
 
 const routes = [
   {
@@ -77,11 +76,6 @@ const routes = [
     component: model
   },
   {
-    path: '/cascade',
-    name: 'cascadeEditor',
-    component: cascadeEditor
-  },
-  {
     path: '/real',
     name: 'realMould',
     component: realMould
@@ -117,9 +111,9 @@ const routes = [
     component: resize
   },
   {
-    path: '/multiple',
-    name: 'multiple',
-    component: multiple
+    path: '/all',
+    name: 'all',
+    component: all
   }
 ]
 
