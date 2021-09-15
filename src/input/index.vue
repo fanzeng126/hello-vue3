@@ -4,7 +4,8 @@
     prefix-icon="search"
     placeholder="我的世界"
     :clearable="true"
-    resize="horizontal" />
+    resize="horizontal"
+    @clear="clear" />
 </template>
 
 <script>
@@ -27,6 +28,9 @@ export default {
     },
     clickPrefixIcon (val) {
       console.log('点击前面的按钮', val)
+    },
+    clear () {
+      this.value = ''
     }
   }
 }

@@ -5,7 +5,8 @@
       readonly
       suffix-icon="close"
       @focus="focus"
-      @blur="blur" />
+      @blur="blur"
+      @clear="clear" />
     <vt-popper
       :visiable="show">
       <ul>
@@ -60,6 +61,9 @@ export default {
         this.show = false
       }, 200)
     },
+    clear () {
+      this.$emit('update:modelValue', null)
+    },
     click (item) {
       this.$emit('update:modelValue', item.value)
     }
@@ -76,6 +80,7 @@ ul {
   padding: 0;
   li {
     padding-left: $inputElementPaddingX;
+    cursor: pointer;
   }
   li:hover {
     background: $normalGreyBackground;

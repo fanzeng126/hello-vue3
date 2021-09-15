@@ -260,8 +260,7 @@ export default {
     clickSuffixIcon (e) {
       switch (this.inputSuffixIcon) {
         case 'close':
-          this.$emit('update:modelValue', '')
-          this.$emit('clear', '')
+          this.$emit('clear')
           break
         default:
           break
