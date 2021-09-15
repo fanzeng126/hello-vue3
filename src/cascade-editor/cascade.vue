@@ -65,9 +65,13 @@
 </template>
 
 <script>
-import { ref, toRefs, computed } from 'vue'
+import { ref, toRefs, computed, watch } from 'vue'
 export default {
   props: {
+    modelValue: {
+      type: Array,
+      default: () => []
+    },
     options: {
       type: Array,
       default: () => []
@@ -81,13 +85,19 @@ export default {
       default: '/'
     }
   },
-  setup (props) {
-    const { separator } = toRefs(props)
+  emits: ['update:modelValue'],
+  setup (props, { emit }) {
+    const { separator, modelValue } = toRefs(props)
     const cascade = ref(null)
     const labels = ref([])
     const value = ref([])
+    value.value = modelValue.value
 
     const label = computed(() => labels.value.join(separator.value))
+
+    watch(() => [...value.value], function (val) {
+      emit('update:modelValue', val)
+    })
 
     return {
       cascade,

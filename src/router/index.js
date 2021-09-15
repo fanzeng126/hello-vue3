@@ -18,6 +18,9 @@ import button from '../button/index.vue'
 import input from '../input/index.vue'
 import resize from '../resize-box/index.vue'
 import all from '../cascade-editor/index.vue'
+import animal from '../cascade-editor/animal.vue'
+import rate from '../rate/rate.vue'
+import collapse from '../collapse/collapse.vue'
 
 const routes = [
   {
@@ -114,6 +117,21 @@ const routes = [
     path: '/all',
     name: 'all',
     component: all
+  },
+  {
+    path: '/animal',
+    name: 'animal',
+    component: animal
+  },
+  {
+    path: '/rate',
+    name: 'rate',
+    component: rate
+  },
+  {
+    path: '/collapse',
+    name: 'collapse',
+    component: collapse
   }
 ]
 
