@@ -8,7 +8,8 @@
       prefix-icon="search"
       suffix-icon="down"
       clearable
-      @clear="clear">
+      @clear="clear"
+      @close="close">
       <template v-slot:firstLevel="{options}">
         <ul>
           <li
@@ -99,7 +100,8 @@ const creatAst = function (ast, options) {
 }
 
 const findCheckNode = function (ast, separator) {
-  const arr = []
+  const labelArr = []
+  const keyArr = []
   for (const key1 in ast) {
     const level1 = ast[key1]
     if (level1.originalData.check === true) {
@@ -112,19 +114,24 @@ const findCheckNode = function (ast, separator) {
               const child = level2.children
               for (const key3 in child) {
                 const level3 = child[key3]
-                if (level3.originalData.check === true) arr.push(level1.label + separator.value + level2.label + separator.value + level3.label)
+                if (level3.originalData.check === true) {
+                  labelArr.push(level1.label + separator.value + level2.label + separator.value + level3.label)
+                  keyArr.push([key1, key2, key3])
+                }
               }
             } else {
-              arr.push(level1.label + '/' + level2.label)
+              labelArr.push(level1.label + separator.value + level2.label)
+              keyArr.push([key1, key2])
             }
           }
         }
       } else {
-        arr.push(level1.label)
+        labelArr.push(level1.label)
+        keyArr.push([key1])
       }
     }
   }
-  return arr
+  return { labelArr, keyArr }
 }
 
 export default {
@@ -145,12 +152,15 @@ export default {
     const ast = reactive({}) // 抽象语法树
     const labels = reactive({})
     const label = ref([])
+    const keys = ref([])
 
     const dataArr = ref([])
     dataArr.value = clonedeep(options.value)
 
     watch(ast, function (val) {
-      label.value.splice(0, label.value.length, ...findCheckNode(val, separator))
+      const { keyArr, labelArr } = findCheckNode(val, separator)
+      label.value.splice(0, label.value.length, ...labelArr)
+      keys.value.splice(0, keys.value.length, ...keyArr)
     })
 
     return {
@@ -159,6 +169,7 @@ export default {
       labels,
       value,
       label,
+      keys,
       ast
     }
   },
@@ -177,9 +188,9 @@ export default {
       }
       this.cascade.clearTimeOutAndFocus()
     },
-    changeFirstLevel (item) {
+    changeFirstLevel (item, val) {
       const checkVal = event.target.checked
-      item.check = checkVal
+      item.check = val || checkVal
       const { isLeaf, children } = this.ast[item.value]
       if (!isLeaf) {
         for (const key in children) {
@@ -199,10 +210,10 @@ export default {
       }
       this.cascade.clearTimeOutAndFocus()
     },
-    changeSecondLevel (item) {
+    changeSecondLevel (item, val) {
       const checkVal = event.target.checked
-      item.check = checkVal
-      const parentNode = this.ast[this.value[0]]
+      item.check = val || checkVal
+      const parentNode = this.ast[item.parentId]
       const currentNode = parentNode.children[item.value]
       const { isLeaf, children } = currentNode
       const { children: parentChildren } = parentNode
@@ -225,12 +236,12 @@ export default {
       }
       this.cascade.clearTimeOutAndFocus()
     },
-    changeThirdLevel (item) {
+    changeThirdLevel (item, val) {
       const checkVal = event.target.checked
-      item.check = checkVal
+      item.check = val || checkVal
 
-      const grandParentNode = this.ast[this.value[0]]
-      const parentNode = grandParentNode.children[this.value[1]]
+      const grandParentNode = this.ast[item.grandParentId]
+      const parentNode = grandParentNode.children[item.parentId]
       const { children: parentChildren } = parentNode
       const { children: grandParentChildren } = grandParentNode
 
@@ -249,6 +260,19 @@ export default {
     clear () {
       this.value.splice(0, this.value.length)
       this.dataArr = clonedeep(this.options)
+    },
+    close (val) {
+      const valueKey = this.keys[val]
+      if (valueKey.length === 3) {
+        const selected = this.ast[valueKey[0]].children[valueKey[1]].children[valueKey[2]]
+        this.changeThirdLevel(selected.originalData, false)
+      } else if (valueKey.length === 2) {
+        const selected = this.ast[valueKey[0]].children[valueKey[1]]
+        this.changeSecondLevel(selected.originalData, false)
+      } else {
+        const selected = this.ast[valueKey[0]]
+        this.changeFirstLevel(selected.originalData, false)
+      }
     }
   }
 }

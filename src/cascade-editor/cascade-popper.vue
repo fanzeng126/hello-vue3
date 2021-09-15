@@ -19,6 +19,7 @@
       @clear="clear" />
     <div
       v-if="!!labels.length"
+      ref="cascaderTags"
       class="cascader__tags"
       @click="clickDiv">
         <span
@@ -30,7 +31,7 @@
           <vt-icon
             icon="close"
             class="icon-right"
-            @click="close"/>
+            @click="close(index)"/>
         </span>
     </div>
     <vt-popper
@@ -57,7 +58,7 @@
   </div>
 </template>
 <script>
-import { computed, toRefs, ref, watch } from 'vue'
+import { computed, toRefs, ref, watch, nextTick } from 'vue'
 export default {
   props: {
     modelValue: {
@@ -119,12 +120,14 @@ export default {
       type: [Array, String]
     }
   },
-  emits: ['update:modelValue', 'clear'],
+  emits: ['update:modelValue', 'clear', 'close'],
   setup (props, { emit }) {
     const timer = ref(null)
     const input = ref(null)
+    const cascaderTags = ref(null)
     const value = ref('')
     const labels = ref([])
+    const divHeight = ref(0)
 
     const {
       modelValue,
@@ -138,12 +141,19 @@ export default {
         value.value = newVal
       })
     } else {
+      // 多选时div展示框
       labels.value = label.value
+      watch(() => [...labels.value], function (val) {
+        if (val.length) {
+          nextTick(function () {
+            const { height } = cascaderTags.value.getBoundingClientRect()
+            divHeight.value = height + 5
+          })
+        } else {
+          divHeight.value = 0
+        }
+      })
     }
-
-    const divHeight = computed(() => {
-      return labels.value.length * 24 + 8 + 2 * (labels.value.length - 1)
-    })
 
     const firstOpitons = computed(() => {
       return options.value
@@ -179,7 +189,8 @@ export default {
       value,
       clearTimeOutAndFocus,
       labels,
-      divHeight
+      divHeight,
+      cascaderTags
     }
   },
   data () {
@@ -199,7 +210,8 @@ export default {
     clear () {
       this.$emit('clear', [])
     },
-    close () {
+    close (index) {
+      this.$emit('close', index)
     },
     clickDiv () {
       this.clearTimeOutAndFocus()
@@ -228,9 +240,8 @@ export default {
     position: relative;
     text-overflow: ellipsis;
     background: #f0f2f5;
-    margin-bottom: 2px;
     max-width: 100%;
-    margin-right: 6px;
+    margin: 3px 6px 0 0;
     height: 24px;
     white-space: nowrap;
     overflow: hidden;
@@ -251,12 +262,6 @@ export default {
       overflow: hidden;
       text-overflow: ellipsis;
     }
-  }
-  & > span:last-child {
-    margin-bottom: 0;
-  }
-  & > span:first-child {
-    margin-top: 3px;
   }
 }
 </style>
