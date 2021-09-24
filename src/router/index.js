@@ -23,6 +23,7 @@ import rate from '../rate/rate.vue'
 import collapse from '../collapse/collapse.vue'
 import render from '../render/index.vue'
 import drawer from '../custom-drawer/index.vue'
+import vd from '../modal/index.vue'
 
 const routes = [
   {
@@ -144,6 +145,11 @@ const routes = [
     path: '/drawer',
     name: 'drawer',
     component: drawer
+  },
+  {
+    path: '/vd',
+    name: 'vd',
+    component: vd
   }
 ]
 
