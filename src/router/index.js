@@ -21,6 +21,8 @@ import all from '../cascade-editor/index.vue'
 import animal from '../cascade-editor/animal.vue'
 import rate from '../rate/rate.vue'
 import collapse from '../collapse/collapse.vue'
+import render from '../render/index.vue'
+import drawer from '../custom-drawer/index.vue'
 
 const routes = [
   {
@@ -132,6 +134,16 @@ const routes = [
     path: '/collapse',
     name: 'collapse',
     component: collapse
+  },
+  {
+    path: '/render',
+    name: 'render',
+    component: render
+  },
+  {
+    path: '/drawer',
+    name: 'drawer',
+    component: drawer
   }
 ]
 

@@ -12,4 +12,13 @@ body.resize-right {
 body.resize-bottom {
   cursor: s-resize;
 }
+.drawer-model {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: .5;
+  background: #000;
+}
 </style>

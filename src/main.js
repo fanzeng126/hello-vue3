@@ -9,6 +9,7 @@ import input from './input/input.vue'
 import cascadePopper from './cascade-editor/cascade-popper.vue'
 import cascade from './cascade-editor/cascade.vue'
 import cascadeMultiple from './cascade-editor/cascade-multiple.vue'
+import button from './button/button.vue'
 import '../static/css/index'
 import './resetFont'
 
@@ -21,6 +22,7 @@ app.component('vt-input', input)
 app.component('vt-cascade-popper', cascadePopper)
 app.component('vt-cascade', cascade)
 app.component('vt-cascade-multiple', cascadeMultiple)
+app.component('vt-button', button)
 
 const requireAll = requireContext => requireContext.keys().map(requireContext)
 const req = require.context('./svg', false, /\.svg$/)
