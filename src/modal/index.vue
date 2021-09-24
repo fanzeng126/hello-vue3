@@ -9,7 +9,7 @@
       @click="open">
       open
     </vt-button>
-    <vt-mdal
+    <vt-modal
       v-model="visiable"
       @onClickButton="onClickButton">
       <div class="content">
@@ -17,7 +17,7 @@
           这是主干
         </main>
       </div>
-    </vt-mdal>
+    </vt-modal>
   </div>
 </template>
 <script>
@@ -25,7 +25,7 @@ import modal from './modal.vue'
 
 export default {
   components: {
-    'vt-mdal': modal
+    'vt-modal': modal
   },
   data () {
     return {
