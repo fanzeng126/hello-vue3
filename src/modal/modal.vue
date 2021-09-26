@@ -5,6 +5,7 @@
     class="vt-modal"
     @click="clickModal">
     <div
+      v-if="modelValue"
       class="wrapper"
       :class="{show}">
       <header>

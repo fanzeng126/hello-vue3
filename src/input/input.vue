@@ -223,7 +223,7 @@ export default {
       } = this.vtInput.getBoundingClientRect()
       this.width = width
       this.height = height
-    }, 200)
+    }, 1)
   },
   watch: {
     width (val) {

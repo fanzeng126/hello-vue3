@@ -16,6 +16,15 @@
        <main>
           <vt-cascade-multiple
             :options="options" />
+          <vt-cascade
+            :options="options" />
+          <vt-input
+            v-model="text"
+            prefix-icon="search"
+            placeholder="我的世界"
+            :clearable="true"
+            resize="horizontal"
+            @clear="clear" />
         </main>
       </div>
     </vt-modal>
@@ -33,7 +42,8 @@ export default {
   data () {
     return {
       name: '弹窗modal',
-      visiable: false
+      visiable: false,
+      text: ''
     }
   },
   methods: {
@@ -44,6 +54,9 @@ export default {
       if (button === 'cancel') {
         win.hide()
       }
+    },
+    clear () {
+      this.text = ''
     }
   }
 }
