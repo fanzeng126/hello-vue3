@@ -8,6 +8,35 @@
 
 <script>
 import { toRefs, watch, ref } from 'vue'
+
+const fadeOut = async function (target) {
+  target.value.classList.add('fade-out')
+  await new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve()
+    }, 180)
+  })
+  target.value.classList.remove('fade-out')
+}
+
+const fadeIn = async function (target) {
+  target.value.classList.add('fade-in')
+  await new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve()
+    }, 180)
+  })
+  target.value.classList.remove('fade-in')
+}
+
+const listenKeydown = function ({ flag, callBack }) {
+  if (flag) {
+    window.addEventListener('keydown', callBack)
+  } else {
+    window.removeEventListener('keydown', callBack)
+  }
+}
+
 export default {
   props: {
     modelValue: {
@@ -32,16 +61,13 @@ export default {
     } = toRefs(props)
     const modal = ref(null)
 
-    const hide = () => {
-      modal.value.classList.add('fade-out')
-      setTimeout(() => {
-        emit('update:modelValue', false)
-        modal.value.classList.remove('fade-out')
-      }, 180)
+    const hide = async () => {
+      await fadeOut(modal)
+      emit('update:modelValue', false)
     }
 
-    const clickModal = function (e) {
-      if (e.target === modal.value) {
+    const clickModal = function () {
+      if (event.target === modal.value) {
         if (wrapperClosable.value) {
           hide()
         }
@@ -56,17 +82,12 @@ export default {
 
     watch(modelValue, (val) => {
       if (val) {
-        modal.value.classList.add('fade-in')
-        setTimeout(() => {
-          modal.value.classList.remove('fade-in')
-        }, 200)
+        fadeIn(modal)
         if (modalAppendToBody.value) {
           document.body.appendChild(modal.value)
         }
-        window.addEventListener('keydown', esc)
-      } else {
-        window.removeEventListener('keydown', esc)
       }
+      listenKeydown({ flag: val, callBack: esc })
     })
 
     return {
