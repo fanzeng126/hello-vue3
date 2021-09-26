@@ -179,12 +179,11 @@ export default {
       this.dataArr = clonedeep(val)
     },
     dataArr (val) {
-      creatAst(this.ast, val)
+      if (val.length) creatAst(this.ast, val)
     }
   },
   mounted () {
     this.dataArr = clonedeep(this.options)
-    creatAst(this.ast, this.dataArr)
   },
   methods: {
     clickFirstLevel (item) {

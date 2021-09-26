@@ -38,3 +38,65 @@
   animation-timing-function: ease-in-out;
   animation-iteration-count: 1;
 }
+
+/*
+右侧进入
+*/
+
+@keyframes inRight {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(0); }
+}
+.in-right {
+  animation-name: inRight;
+  animation-duration: .2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1;
+}
+
+/*
+右侧退出
+*/
+
+@keyframes outRight {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(100%); }
+}
+.out-right {
+  animation-name: outRight;
+  animation-duration: .2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1;
+}
+
+
+/*
+弹窗从下方出现
+*/
+
+@keyframes inTY240 {
+  0% { transform: translateY(240px); }
+  100% { transform: translateY(0); }
+}
+.in-ty-240 {
+  animation-name: inTY240;
+  animation-duration: .2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1;
+}
+
+
+/*
+弹窗从下方退出
+*/
+
+@keyframes outTY240 {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(240px); }
+}
+.out-ty-240 {
+  animation-name: outTY240;
+  animation-duration: .2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1;
+}

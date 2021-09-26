@@ -6,8 +6,8 @@
     @click="clickModal">
     <div
       v-if="modelValue"
-      class="wrapper"
-      :class="{show}">
+      ref="wrapper"
+      class="wrapper">
       <header>
         这是头部标题
         <vt-icon
@@ -33,7 +33,8 @@
 
 <script>
 import { toRefs, watch, ref, onMounted } from 'vue'
-import { fadeOut, fadeIn, listenKeydown } from './pop'
+import { anime } from '../utils/anime'
+import { listenKeydown } from '../utils/listenEvent'
 
 export default {
   props: {
@@ -58,11 +59,11 @@ export default {
       wrapperClosable
     } = toRefs(props)
     const modal = ref(null)
-    const show = ref(false)
+    const wrapper = ref(null)
 
     const hide = async () => {
-      show.value = false
-      await fadeOut(modal)
+      anime({ target: modal, timer: 180, animationName: 'fade-out' })
+      await anime({ target: wrapper, timer: 200, animationName: 'out-ty-240' })
       emit('update:modelValue', false)
     }
 
@@ -86,20 +87,20 @@ export default {
       }
     })
 
-    watch(modelValue, (val) => {
+    watch(modelValue, async (val) => {
       if (val) {
+        anime({ target: modal, timer: 180, animationName: 'fade-in' })
         setTimeout(() => {
-          show.value = true
+          anime({ target: wrapper, timer: 200, animationName: 'in-ty-240' })
         }, 1)
-        fadeIn(modal)
       }
       listenKeydown({ flag: val, callBack: esc })
     })
 
     return {
       modal,
+      wrapper,
       clickModal,
-      show,
       hide
     }
   },
@@ -134,8 +135,6 @@ export default {
     color: #333;
     display: flex;
     flex-direction: column;
-    transition: all .2s;
-    transform: translateY(240px);
     header {
       display: flex;
       align-items: center;
@@ -149,9 +148,6 @@ export default {
         margin-right: 8px;
       }
     }
-  }
-  .wrapper.show {
-    transform: translateY(0);
   }
 }
 </style>

@@ -8,7 +8,9 @@
 
 <script>
 import { toRefs, watch, ref, onMounted } from 'vue'
-import { fadeOut, fadeIn, listenKeydown } from './pop'
+import { anime } from '../utils/anime'
+import { listenKeydown } from '../utils/listenEvent'
+
 export default {
   props: {
     modelValue: {
@@ -34,7 +36,7 @@ export default {
     const modal = ref(null)
 
     const hide = async () => {
-      await fadeOut(modal)
+      await anime({ target: modal, timer: 180, animationName: 'fade-out' })
       emit('update:modelValue', false)
     }
 
@@ -58,7 +60,7 @@ export default {
     })
 
     watch(modelValue, (val) => {
-      if (val) fadeIn(modal)
+      if (val) anime({ target: modal, timer: 180, animationName: 'fade-in' })
       listenKeydown({ flag: val, callBack: esc })
     })
 

@@ -49,13 +49,3 @@ export function useAst (level, parentKey, grandParentKey, ast, a, ...options) {
     return ast
   }
 }
-
-export function child (ast, key, ...options) {
-  if (!ast[key].isLeaf) {
-    const children = ast[key].children
-    ast[key].children = {}
-    useAst(ast[key].children, ...children)
-  } else {
-    child(ast, ...options)
-  }
-}

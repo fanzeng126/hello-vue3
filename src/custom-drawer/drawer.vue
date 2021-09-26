@@ -1,68 +1,63 @@
 <template>
   <div
+    ref="drawer"
+    v-show="modelValue"
     class="drawer"
-    :class="{show}">
+    @click="hide">
     <slot />
   </div>
 </template>
 <script>
-// import { add } from './model'
+import { ref, toRefs, watch } from 'vue'
+import { anime } from '../utils/anime'
 export default {
   props: {
-    visible: {
+    modelValue: {
       type: Boolean,
       default: false
+    },
+    modalAppendToBody: {
+      type: Boolean,
+      default: false
+    },
+    wrapperClosable: {
+      type: Boolean,
+      default: true
     }
   },
-  data () {
+  emits: ['update:modelValue'],
+  setup (props, { emit }) {
+    const { modelValue } = toRefs(props)
+    const drawer = ref(null)
+
+    watch(modelValue, () => {
+      anime({ target: drawer, timer: 200, animationName: 'in-right' })
+    })
+
+    const hide = async () => {
+      await anime({ target: drawer, timer: 180, animationName: 'out-right' })
+      emit('update:modelValue', false)
+    }
+
     return {
-      show: false
-    }
-  },
-  emits: ['change'],
-  watch: {
-    visible (val) {
-      if (val) {
-        // const modal = add()
-        // document.body.appendChild(modal)
-        // modal.addEventListener('click', () => {
-        //   this.close()
-        // })
-        setTimeout(() => {
-          this.show = true
-        }, 1)
-      }
-    }
-  },
-  mounted () {
-  },
-  methods: {
-    close () {
-      this.show = false
-      setTimeout(() => {
-        this.$emit('change', false)
-      }, 300)
+      drawer,
+      hide
     }
   }
 }
 </script>
 <style lang="postcss" scoped>
 .drawer {
-  transform: translateX(100%);
   position: fixed;
   top: 0;
   bottom: 0;
   right: 0;
   width: 40%;
-  border: 1px solid red;
   background: #fff;
-  transition: all .3s;
+  transition: all .2s;
   font-size: 1rem;
-  z-index: 22;
+  z-index: 6;
   display: flex;
+  box-shadow: 0 8px 10px -5px rgb(0 0 0 / 20%), 0 16px 24px 2px rgb(0 0 0 / 14%), 0 6px 30px 5px rgb(0 0 0 / 12%);
 }
-.drawer.show {
-  transform: translateX(0);
-}
-
 </style>

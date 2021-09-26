@@ -5,13 +5,12 @@
       @click="click">
       primary
     </vt-button>
-    <vt-modal
+    <!-- <vt-modal
       v-model="show"
-      :modal-append-to-body="true" />
+      :modal-append-to-body="true" /> -->
     <vt-drawer
-      v-show="show"
-      :visible="show"
-      @change="change">
+      ref="cDrawer"
+      v-model="show">
       <div class="drawer-box">
         <div class="header">
           这是文字标题
