@@ -64,6 +64,7 @@ export default {
 </script>
 <style lang="postcss" scoped>
 .editor-popper {
+  z-index: 6;
   transition: all ease .1s;
   position: absolute;
   font-size: $documentFontSize;

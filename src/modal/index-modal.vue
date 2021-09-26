@@ -14,7 +14,8 @@
       @onClickButton="onClickButton">
       <div class="content">
        <main>
-         这是主体
+          <vt-cascade-multiple
+            :options="options" />
         </main>
       </div>
     </vt-modal>
@@ -22,8 +23,10 @@
 </template>
 <script>
 import modal from './modal.vue'
+import data from '../cascade-editor/data'
 
 export default {
+  mixins: [data],
   components: {
     'vt-modal': modal
   },

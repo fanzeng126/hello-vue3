@@ -122,6 +122,7 @@ export default {
   background: rgba(0, 0, 0, .5);
   display: flex;
   align-content: center;
+  z-index: 5;
   .wrapper {
     font-size: 24px;
     width: 700px;
