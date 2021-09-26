@@ -5,12 +5,14 @@
       @click="click">
       primary
     </vt-button>
-    <!-- <vt-modal
+    <vt-modal
       v-model="show"
-      :modal-append-to-body="true" /> -->
+      :modal-append-to-body="true" />
     <vt-drawer
       ref="cDrawer"
-      v-model="show">
+      v-model="show"
+      position="right"
+      :modal-append-to-body="true">
       <div class="drawer-box">
         <div class="header">
           这是文字标题
@@ -66,5 +68,11 @@ export default {
   .content {
     flex: 1;
   }
+}
+.vt-bottom {
+  left: 20px;
+  right: 20px;
+  height: 20%;
+  border-radius: 8px 8px 0 0;
 }
 </style>

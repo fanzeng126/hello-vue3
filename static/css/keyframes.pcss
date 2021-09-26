@@ -69,6 +69,96 @@
   animation-iteration-count: 1;
 }
 
+/*
+左侧进入
+*/
+
+@keyframes inLeft {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(0); }
+}
+.in-left {
+  animation-name: inLeft;
+  animation-duration: .2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1;
+}
+
+/*
+左侧退出
+*/
+
+@keyframes outLeft {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+.out-left {
+  animation-name: outLeft;
+  animation-duration: .2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1;
+}
+
+/*
+上部进入
+*/
+
+@keyframes inTop {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(0); }
+}
+.in-top {
+  animation-name: inTop;
+  animation-duration: .2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1;
+}
+
+/*
+上部退出
+*/
+
+@keyframes outTop {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-100%); }
+}
+.out-top {
+  animation-name: outTop;
+  animation-duration: .2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1;
+}
+
+/*
+下部进入
+*/
+
+@keyframes inBottom {
+  0% { transform: translateY(100%); }
+  100% { transform: translateY(0); }
+}
+.in-bottom {
+  animation-name: inBottom;
+  animation-duration: .2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1;
+}
+
+/*
+下部退出
+*/
+
+@keyframes outBottom {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(100%); }
+}
+.out-bottom {
+  animation-name: outBottom;
+  animation-duration: .2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1;
+}
+
 
 /*
 弹窗从下方出现
