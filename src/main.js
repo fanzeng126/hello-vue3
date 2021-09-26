@@ -11,6 +11,8 @@ import cascade from './cascade-editor/cascade.vue'
 import cascadeMultiple from './cascade-editor/cascade-multiple.vue'
 import button from './button/button.vue'
 import editor from './check-select/editor.vue'
+import modal from './modal/modal.vue'
+import dialog from './modal/dialog.vue'
 import '../static/css/index'
 import './resetFont'
 
@@ -25,6 +27,8 @@ app.component('vt-cascade', cascade)
 app.component('vt-cascade-multiple', cascadeMultiple)
 app.component('vt-button', button)
 app.component('vt-check', editor)
+app.component('vt-modal', modal)
+app.component('vt-dialog', dialog)
 
 const requireAll = requireContext => requireContext.keys().map(requireContext)
 const req = require.context('./svg', false, /\.svg$/)

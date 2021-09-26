@@ -5,6 +5,9 @@
       @click="click">
       primary
     </vt-button>
+    <vt-modal
+      v-model="show"
+      :modal-append-to-body="true" />
     <vt-drawer
       v-show="show"
       :visible="show"
