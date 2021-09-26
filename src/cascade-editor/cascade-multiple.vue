@@ -5,6 +5,7 @@
       v-model="value"
       :options="dataArr"
       :label="label"
+      readonly
       prefix-icon="search"
       suffix-icon="down"
       clearable
@@ -181,6 +182,10 @@ export default {
       creatAst(this.ast, val)
     }
   },
+  mounted () {
+    this.dataArr = clonedeep(this.options)
+    creatAst(this.ast, this.dataArr)
+  },
   methods: {
     clickFirstLevel (item) {
       if (item.value !== this.value[0]) {
@@ -279,7 +284,9 @@ export default {
 </script>
 <style lang="postcss" scoped>
 .cascade {
-  font-size: 0px;
+  font-size: 0;
+  position: relative;
+  display: inline-block;
 }
 ul {
   padding: 0;

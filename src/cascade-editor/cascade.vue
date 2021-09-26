@@ -5,6 +5,7 @@
       v-model="value"
       :options="options"
       :label="label"
+      readonly
       prefix-icon="search"
       suffix-icon="down"
       clearable
@@ -136,7 +137,9 @@ export default {
 </script>
 <style lang="postcss" scoped>
 .cascade {
-  font-size: 0px;
+  font-size: 0;
+  position: relative;
+  display: inline-block;
 }
 ul {
   padding: 0;

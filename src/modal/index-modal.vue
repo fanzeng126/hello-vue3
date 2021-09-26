@@ -14,17 +14,32 @@
       @onClickButton="onClickButton">
       <div class="content">
        <main>
-          <vt-cascade-multiple
-            :options="options" />
-          <vt-cascade
-            :options="options" />
-          <vt-input
-            v-model="text"
-            prefix-icon="search"
-            placeholder="我的世界"
-            :clearable="true"
-            resize="horizontal"
-            @clear="clear" />
+          <div>
+            <label>
+              输入框
+            </label>
+            <vt-input
+              v-model="text"
+              prefix-icon="search"
+              placeholder="我的世界"
+              :clearable="true"
+              resize="both"
+              @clear="clear" />
+          </div>
+          <div>
+            <label>
+              级联多选选择
+            </label>
+            <vt-cascade-multiple
+              :options="options" />
+          </div>
+          <div>
+            <label>
+              级联单选
+            </label>
+            <vt-cascade
+              :options="options" />
+          </div>
         </main>
       </div>
     </vt-modal>
@@ -81,6 +96,14 @@ export default {
       border-bottom: 1px solid #999;
       flex: 1;
       padding: 10px;
+      & > div {
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        & > label {
+          margin-right: 8px;
+        }
+      }
     }
   }
 }
