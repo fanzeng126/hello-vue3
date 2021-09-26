@@ -10,7 +10,8 @@
       open
     </vt-button>
     <vt-wrapper
-      v-model="visiable">
+      v-model="visiable"
+      :modal-append-to-body="true">
       <div class="content">
        <main>
          这是主体

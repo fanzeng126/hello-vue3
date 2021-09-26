@@ -7,36 +7,8 @@
 </template>
 
 <script>
-import { toRefs, watch, ref } from 'vue'
-
-const fadeOut = async function (target) {
-  target.value.classList.add('fade-out')
-  await new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve()
-    }, 180)
-  })
-  target.value.classList.remove('fade-out')
-}
-
-const fadeIn = async function (target) {
-  target.value.classList.add('fade-in')
-  await new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve()
-    }, 180)
-  })
-  target.value.classList.remove('fade-in')
-}
-
-const listenKeydown = function ({ flag, callBack }) {
-  if (flag) {
-    window.addEventListener('keydown', callBack)
-  } else {
-    window.removeEventListener('keydown', callBack)
-  }
-}
-
+import { toRefs, watch, ref, onMounted } from 'vue'
+import { fadeOut, fadeIn, listenKeydown } from './pop'
 export default {
   props: {
     modelValue: {
@@ -79,14 +51,14 @@ export default {
         hide()
       }
     }
+    onMounted(() => {
+      if (modalAppendToBody.value) {
+        document.body.appendChild(modal.value)
+      }
+    })
 
     watch(modelValue, (val) => {
-      if (val) {
-        fadeIn(modal)
-        if (modalAppendToBody.value) {
-          document.body.appendChild(modal.value)
-        }
-      }
+      if (val) fadeIn(modal)
       listenKeydown({ flag: val, callBack: esc })
     })
 
