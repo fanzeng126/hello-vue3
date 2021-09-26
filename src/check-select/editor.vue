@@ -3,7 +3,7 @@
     <vt-input
       v-model="label"
       readonly
-      suffix-icon="close"
+      suffix-icon="close-circle"
       @focus="focus"
       @blur="blur"
       @clear="clear" />

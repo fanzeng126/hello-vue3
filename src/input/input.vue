@@ -190,7 +190,7 @@ export default {
 
     // 为密码时，默认展示眼镜，可清空时，默认展示×号
 
-    const inputSuffixIcon = computed(() => type.value === 'password' ? 'eyes' : clearable.value ? 'close' : suffixIcon.value)
+    const inputSuffixIcon = computed(() => type.value === 'password' ? 'eyes' : clearable.value ? 'close-circle' : suffixIcon.value)
 
     watch(value, function (newVal, olaVal) {
       if (newVal.length > wordLimit.value) {
@@ -259,7 +259,7 @@ export default {
     },
     clickSuffixIcon (e) {
       switch (this.inputSuffixIcon) {
-        case 'close':
+        case 'close-circle':
           this.$emit('clear')
           break
         default:

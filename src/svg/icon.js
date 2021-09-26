@@ -1,4 +1,5 @@
 import close from './close.svg'
+import closeCircle from './close-circle.svg'
 import down from './down.svg'
 import up from './up.svg'
 import right from './right.svg'
@@ -15,7 +16,8 @@ const icons = {
   loading,
   search,
   eyes,
-  check
+  check,
+  closeCircle
 }
 
 export default icons

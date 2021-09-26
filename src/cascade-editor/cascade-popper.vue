@@ -29,7 +29,7 @@
             {{ item }}
           </span>
           <vt-icon
-            icon="close"
+            icon="close-circle"
             class="icon-right"
             @click="close(index)"/>
         </span>
