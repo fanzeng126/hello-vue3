@@ -23,7 +23,7 @@ import rate from '../rate/rate.vue'
 import collapse from '../collapse/collapse.vue'
 import render from '../render/index.vue'
 import drawer from '../custom-drawer/index.vue'
-import modal from '../modal/index.vue'
+import modal from '../modal/index-wrapper.vue'
 import vd from '../drawer/index.vue'
 
 const routes = [

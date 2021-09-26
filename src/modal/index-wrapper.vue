@@ -9,38 +9,32 @@
       @click="open">
       open
     </vt-button>
-    <vt-modal
-      v-model="visiable"
-      @onClickButton="onClickButton">
+    <vt-wrapper
+      v-model="visiable">
       <div class="content">
        <main>
-          这是主干
+         这是主体
         </main>
       </div>
-    </vt-modal>
+    </vt-wrapper>
   </div>
 </template>
 <script>
-import modal from './modal.vue'
+import wrapper from './wrapper.vue'
 
 export default {
   components: {
-    'vt-modal': modal
+    'vt-wrapper': wrapper
   },
   data () {
     return {
-      name: '弹窗modal',
+      name: '弹窗wrapper',
       visiable: false
     }
   },
   methods: {
     open () {
       this.visiable = true
-    },
-    onClickButton (button, win) {
-      if (button === 'cancel') {
-        win.hide()
-      }
     }
   }
 }
