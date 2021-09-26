@@ -31,7 +31,9 @@
 </template>
 
 <script>
-import { toRefs, watch, ref } from 'vue'
+import { toRefs, watch, ref, onMounted } from 'vue'
+import { fadeOut, fadeIn, listenKeydown } from './pop'
+
 export default {
   props: {
     modelValue: {
@@ -57,15 +59,14 @@ export default {
     const modal = ref(null)
     const show = ref(false)
 
-    const hide = () => {
+    const hide = async () => {
       show.value = false
-      setTimeout(() => {
-        emit('update:modelValue', false)
-      }, 180)
+      await fadeOut(modal)
+      emit('update:modelValue', false)
     }
 
-    const clickModal = function (e) {
-      if (e.target === modal.value) {
+    const clickModal = function () {
+      if (event.target === modal.value) {
         if (wrapperClosable.value) {
           hide()
         }
@@ -78,18 +79,20 @@ export default {
       }
     }
 
+    onMounted(() => {
+      if (modalAppendToBody.value) {
+        document.body.appendChild(modal.value)
+      }
+    })
+
     watch(modelValue, (val) => {
       if (val) {
-        if (modalAppendToBody.value) {
-          document.body.appendChild(modal.value)
-        }
-        window.addEventListener('keydown', esc)
         setTimeout(() => {
           show.value = true
         }, 1)
-      } else {
-        window.removeEventListener('keydown', esc)
+        fadeIn(modal)
       }
+      listenKeydown({ flag: val, callBack: esc })
     })
 
     return {
