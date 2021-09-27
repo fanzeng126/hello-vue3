@@ -13,6 +13,8 @@ import button from './button/button.vue'
 import editor from './check-select/editor.vue'
 import modal from './modal/modal.vue'
 import dialog from './modal/dialog.vue'
+import drawer from './drawer/drawer.vue'
+import drawerModel from './drawer/drawer-model.vue'
 import '../static/css/index'
 import './resetFont'
 
@@ -29,6 +31,8 @@ app.component('vt-button', button)
 app.component('vt-check', editor)
 app.component('vt-modal', modal)
 app.component('vt-dialog', dialog)
+app.component('vt-drawer', drawer)
+app.component('vt-drawer-model', drawerModel)
 
 const requireAll = requireContext => requireContext.keys().map(requireContext)
 const req = require.context('./svg', false, /\.svg$/)

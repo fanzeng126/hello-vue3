@@ -22,9 +22,8 @@ import animal from '../cascade-editor/animal.vue'
 import rate from '../rate/rate.vue'
 import collapse from '../collapse/collapse.vue'
 import render from '../render/index.vue'
-import drawer from '../custom-drawer/index.vue'
+import drawer from '../drawer/index.vue'
 import modal from '../modal/index-dialog.vue'
-import vd from '../drawer/index.vue'
 
 const routes = [
   {
@@ -151,11 +150,6 @@ const routes = [
     path: '/modal',
     name: 'modal',
     component: modal
-  },
-  {
-    path: '/vd',
-    name: 'vd',
-    component: vd
   }
 ]
 

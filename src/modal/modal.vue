@@ -26,8 +26,8 @@ export default {
       default: true
     }
   },
-  emits: ['update:modelValue'],
-  setup (props, { emit, slots }) {
+  emits: ['update:modelValue', 'hide'],
+  setup (props, { emit }) {
     const {
       modelValue,
       modalAppendToBody,
@@ -36,6 +36,7 @@ export default {
     const modal = ref(null)
 
     const hide = async () => {
+      emit('hide', false)
       await anime({ target: modal, timer: 180, animationName: 'fade-out' })
       emit('update:modelValue', false)
     }

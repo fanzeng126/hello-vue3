@@ -12,13 +12,11 @@ body.resize-right {
 body.resize-bottom {
   cursor: s-resize;
 }
-.drawer-model {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+.vt-bottom {
+  left: 40px !important;
+  right: 40px !important;
   bottom: 0;
-  opacity: .5;
-  background: #000;
+  height: 40% !important;
+  border-radius: 8px 8px 0 0;
 }
 </style>
