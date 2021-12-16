@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"   width="100px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+<g transform="rotate(0 50 50)">
+<animateTransform attributeName="transform" type="rotate" values="0 50 50;90 50 50" keyTimes="0;1" dur="0.5s" repeatCount="indefinite"></animateTransform>
+<circle cx="57.9547" cy="51.0453" r="3.5" fill="#1890ff">
+  <animate attributeName="fill" values="#1890ff;#49a7ff" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
+</circle>
+<circle cx="48.9547" cy="57.9547"  r="3.5" fill="#49a7ff">
+  <animate attributeName="fill" values="#49a7ff;#75bdff" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
+</circle>
+<circle  cx="42.0453" cy="48.9547" r="3.5" fill="#75bdff">
+  <animate attributeName="fill" values="#75bdff;#9bcfff" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
+</circle>
+<circle cx="51.0453" cy="42.0453" r="3.5" fill="#9bcfff">
+  <animate attributeName="fill" values="#9bcfff;#1890ff" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
+</circle>
+</g>
+</svg> 
