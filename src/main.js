@@ -40,5 +40,5 @@ requireAll(req)
 
 app.config.globalProperties.$htmlFontSize = () => {
   const htmlDom = document.documentElement
-  return parseInt(htmlDom.style.fontSize, 10)
+  return parseFloat(htmlDom.style.fontSize, 10)
 }

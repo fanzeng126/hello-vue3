@@ -24,6 +24,7 @@ import collapse from '../collapse/collapse.vue'
 import render from '../render/index.vue'
 import drawer from '../drawer/index.vue'
 import modal from '../modal/index-dialog.vue'
+import bar from '../echart-canvas/bar.vue'
 
 const routes = [
   {
@@ -150,6 +151,11 @@ const routes = [
     path: '/modal',
     name: 'modal',
     component: modal
+  },
+  {
+    path: '/chart/bar',
+    name: 'bar',
+    component: bar
   }
 ]
 
