@@ -8,10 +8,10 @@
 </template>
 <script>
 
-import transition from './render'
+// import transition from './render'
 export default {
   components: {
-    'vt-transition': transition
+    // 'vt-transition': transition
   },
   data () {
     return {
