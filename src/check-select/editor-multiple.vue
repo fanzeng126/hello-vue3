@@ -17,7 +17,7 @@
         <li
         v-for="(item) in options"
         :key="item.value"
-        :check="item.value === modelValue"
+        :check="modelValue.includes(item.value)"
         @click="click(item)">
         {{ item.label }}
         </li>
@@ -41,7 +41,7 @@ export default {
     }
   },
   emits: ['update:modelValue'],
-  setup (props, { emit }) {
+  setup (props) {
     const { modelValue, options } = toRefs(props)
     const multipleInput = ref(null)
     const modelVisible = ref(true)
