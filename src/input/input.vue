@@ -192,12 +192,6 @@ export default {
 
     const inputSuffixIcon = computed(() => type.value === 'password' ? 'eyes' : clearable.value ? 'close-circle' : suffixIcon.value)
 
-    watch(value, function (newVal, olaVal) {
-      if (newVal.length > wordLimit.value) {
-        emit('update:modelValue', newVal.substr(-10))
-      }
-    })
-
     return {
       value,
       inputWordLimit,
@@ -249,7 +243,12 @@ export default {
       this.$emit('update:modelValue', e.target.value)
     },
     change (e) {
-      this.$emit('update:modelValue', e.target.value)
+      let newVal = e.target.value
+      if (newVal.length > this.wordLimit) {
+        newVal = newVal.substr(-this.wordLimit)
+      }
+      e.target.value = newVal
+      this.$emit('update:modelValue', newVal)
     },
     focus (e) {
       this.$emit('focus', true)
