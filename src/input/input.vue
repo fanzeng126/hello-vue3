@@ -9,7 +9,7 @@
       ]" />
     <input
       class="vt-input_inner"
-      :type="inputTpye"
+      :type="inputType"
       ref="vtInput"
       :readonly="readonly"
       :value="value"
@@ -45,7 +45,10 @@
       @mouseleave="mouseup" />
     <span
       v-if="inputWordLimit"
-      class="tips msg">
+      :class="[
+        'tips msg',
+        tipMsgRight
+      ]">
       {{ limitTips }}
     </span>
     <vt-resize
@@ -182,9 +185,11 @@ export default {
 
     const seePassword = ref(false)
 
-    const inputTpye = computed(() => seePassword.value ? 'text' : type.value)
+    const inputType = computed(() => seePassword.value ? 'text' : type.value)
 
     const inputWordLimit = computed(() => wordLimit.value && type.value === 'text')
+
+    const tipMsgRight = computed(() => inputWordLimit.value && clearable.value ? 'right' : '')
 
     const limitTips = calLimitTips({ value, wordLimit })
 
@@ -198,8 +203,9 @@ export default {
       limitTips,
       inputSuffixIcon,
       seePassword,
-      inputTpye,
-      vtInput
+      inputType,
+      vtInput,
+      tipMsgRight
     }
   },
   data () {
@@ -281,10 +287,13 @@ export default {
   transform: translateY(-50%);
   cursor: pointer;
 }
-.msg {
+.tips.msg {
   right: 10px;
   font-size: $tipFontSize;
   color: $tipFontColor;
+}
+.tips.msg.right {
+  right: 26px;
 }
 .prefix {
   left: 10px;
