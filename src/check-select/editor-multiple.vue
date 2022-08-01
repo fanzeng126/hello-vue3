@@ -2,10 +2,10 @@
   <div class="editor">
     <vt-input
       v-model="labels"
-      ref="selectInput"
+      ref="multipleInput"
       readonly
       suffix-icon="close-circle"
-      model-type="select"
+      :model-visible="modelVisible"
       @focus="focus"
       @blur="blur"
       @clear="clear" />
@@ -43,6 +43,8 @@ export default {
   emits: ['update:modelValue'],
   setup (props, { emit }) {
     const { modelValue, options } = toRefs(props)
+    const multipleInput = ref(null)
+    const modelVisible = ref(true)
     const selectValues = ref([])
     selectValues.value = clonedeep(modelValue.value)
 
@@ -61,8 +63,10 @@ export default {
       return selectLabels.length ? selectLabels.join('、') : ''
     })
     return {
+      multipleInput,
       selectValues,
-      labels
+      labels,
+      modelVisible
     }
   },
   data () {
@@ -77,10 +81,11 @@ export default {
       this.show = true
     },
     blur (e) {
-      // this.selectInput.active = false
-      // setTimeout(() => {
-      //   this.show = false
-      // }, 200)
+      if (!this.modelVisible) {
+        setTimeout(() => {
+          this.show = false
+        }, 200)
+      }
     },
     clear () {
       this.$emit('update:modelValue', [])
@@ -97,8 +102,11 @@ export default {
       }
     },
     mouseenter () {
+      this.modelVisible = true
     },
     mouseleave () {
+      this.multipleInput.vtInput.focus()
+      this.modelVisible = false
     }
   }
 }

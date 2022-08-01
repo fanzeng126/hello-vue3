@@ -5,7 +5,6 @@
       ref="selectInput"
       readonly
       suffix-icon="close-circle"
-      model-type="select"
       @focus="focus"
       @blur="blur"
       @clear="clear" />
@@ -62,7 +61,6 @@ export default {
       this.show = true
     },
     blur (e) {
-      this.selectInput.active = false
       setTimeout(() => {
         this.show = false
       }, 200)

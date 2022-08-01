@@ -1,12 +1,12 @@
 <template>
   <teleport
     v-if="show"
-    to="body"
-    @mouseenter="mouseenter"
-    @mouseleave="mouseleave">
+    to="body">
     <div
       class="editor-popper"
-      :style="style">
+      :style="style"
+      @mouseenter="mouseenter"
+      @mouseleave="mouseleave">
       <slot />
     </div>
   </teleport>
