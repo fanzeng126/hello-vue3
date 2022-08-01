@@ -10,7 +10,7 @@
       open
     </vt-button>
     <vt-dialog
-      v-model="visiable"
+      v-model="visible"
       @onClickButton="onClickButton">
       <div class="content">
        <main>
@@ -65,7 +65,7 @@ export default {
   data () {
     return {
       name: '弹窗modal',
-      visiable: false,
+      visible: false,
       text: '',
       value: 0,
       arr: [
@@ -91,7 +91,7 @@ export default {
   },
   methods: {
     open () {
-      this.visiable = true
+      this.visible = true
     },
     onClickButton (button, win) {
       if (button === 'cancel') {

@@ -1,7 +1,9 @@
 <template>
   <teleport
     v-if="show"
-    to="body">
+    to="body"
+    @mouseenter="mouseenter"
+    @mouseleave="mouseleave">
     <div
       class="editor-popper"
       :style="style">
@@ -14,7 +16,7 @@ import { reactive, ref, toRefs } from 'vue'
 import { getRectStyle } from '../utils/getRectStyle'
 export default {
   props: {
-    visiable: {
+    visible: {
       type: Boolean,
       default: false,
       required: true
@@ -24,18 +26,30 @@ export default {
       default: 1
     }
   },
-  setup (props) {
+  setup (props, { emit }) {
     const show = ref(false)
-    const { visiable } = toRefs(props)
-    show.value = visiable.value
+    const { visible } = toRefs(props)
+    show.value = visible.value
     const style = reactive({ 'max-height': '0px' })
+    const mouseenter = function () {
+      emit('mouseenter')
+    }
+    const mouseleave = function () {
+      emit('mouseleave')
+    }
     return {
       style,
-      show
+      show,
+      mouseenter,
+      mouseleave
     }
   },
+  emits: [
+    'mouseenter',
+    'mouseleave'
+  ],
   watch: {
-    visiable (newVal) {
+    visible (newVal) {
       if (newVal) {
         this.show = true
         const htmlFontSize = this.$htmlFontSize()

@@ -1,6 +1,6 @@
 <template>
-  <div v-if="visiable" class="modal">
-    <button @click="visiable = false;$emit('change', false)">
+  <div v-if="visible" class="modal">
+    <button @click="visible = false;$emit('change', false)">
       Close
     </button>
     <slot />
@@ -21,15 +21,15 @@ export default {
     }
   },
   setup (props) {
-    const visiable = ref(false)
+    const visible = ref(false)
     const { modalOpen } = toRefs(props)
-    visiable.value = modalOpen.value
+    visible.value = modalOpen.value
 
     watch(modalOpen, function (val) {
-      visiable.value = val
+      visible.value = val
     })
     return {
-      visiable
+      visible
     }
   },
   mounted () {

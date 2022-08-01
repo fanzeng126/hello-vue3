@@ -10,7 +10,7 @@
       open
     </vt-button>
     <vt-modal
-      v-model="visiable"
+      v-model="visible"
       :modal-append-to-body="true">
       <div class="content">
        <main>
@@ -30,12 +30,12 @@ export default {
   data () {
     return {
       name: '弹窗wrapper',
-      visiable: false
+      visible: false
     }
   },
   methods: {
     open () {
-      this.visiable = true
+      this.visible = true
     }
   }
 }

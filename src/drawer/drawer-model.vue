@@ -1,15 +1,15 @@
 <template>
   <vt-modal
     ref="vtModal"
-    v-if="visiableModel"
-    v-model="visiable"
+    v-if="visibleModel"
+    v-model="visible"
     :modal-append-to-body="modalAppendToBody"
     :wrapper-closable="wrapperClosable"
     @hide="hideDrawer"
  />
   <vt-drawer
     ref="vtDrawer"
-    v-model="visiable"
+    v-model="visible"
     :modal-append-to-body="modalAppendToBody"
     :position="position"
     :class-name="className">
@@ -20,7 +20,7 @@
 import { toRefs, ref, watch } from 'vue'
 export default {
   props: {
-    visiableModel: {
+    visibleModel: {
       type: Boolean,
       default: true
     },
@@ -48,18 +48,18 @@ export default {
   },
   emits: ['update:modelValue'],
   setup (props, { emit }) {
-    const { modelValue, visiableModel } = toRefs(props)
-    const visiable = ref(false)
+    const { modelValue, visibleModel } = toRefs(props)
+    const visible = ref(false)
     const vtDrawer = ref(null)
     const vtModal = ref(null)
 
-    visiable.value = modelValue.value
+    visible.value = modelValue.value
 
     watch(modelValue, (val) => {
-      visiable.value = val
+      visible.value = val
     })
 
-    watch(visiable, (val) => {
+    watch(visible, (val) => {
       emit('update:modelValue', val)
     })
 
@@ -72,7 +72,7 @@ export default {
     }
 
     const hide = () => {
-      if (visiableModel.value) {
+      if (visibleModel.value) {
         hideModal()
       } else {
         hideDrawer()
@@ -80,7 +80,7 @@ export default {
     }
 
     return {
-      visiable,
+      visible,
       vtDrawer,
       vtModal,
       hideModal,

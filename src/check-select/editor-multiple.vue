@@ -1,7 +1,7 @@
 <template>
   <div class="editor">
     <vt-input
-      v-model="label"
+      v-model="labels"
       ref="selectInput"
       readonly
       suffix-icon="close-circle"
@@ -10,7 +10,9 @@
       @blur="blur"
       @clear="clear" />
     <vt-popper
-      :visiable="show">
+      :visible="show"
+      @mouseenter="mouseenter"
+      @mouseleave="mouseleave">
       <ul>
         <li
         v-for="(item) in options"
@@ -24,34 +26,43 @@
   </div>
 </template>
 <script>
-import { computed, toRefs, ref } from 'vue'
+import { computed, toRefs, ref, watch } from 'vue'
+import clonedeep from 'lodash.clonedeep'
 // 单选选择框
 export default {
   props: {
     modelValue: {
-      type: Number,
-      default: null
+      type: Array,
+      default: () => []
     },
     options: {
       type: Array,
       default: () => []
-    },
-    multiple: { // 是否可以多选
-      type: Boolean,
-      default: false
     }
   },
   emits: ['update:modelValue'],
   setup (props, { emit }) {
     const { modelValue, options } = toRefs(props)
-    const selectInput = ref(null)
-    const label = computed(() => {
-      const filterValue = options.value.filter(item => item.value === modelValue.value)
-      return filterValue.length ? filterValue[0].label : ''
+    const selectValues = ref([])
+    selectValues.value = clonedeep(modelValue.value)
+
+    watch(() => [...modelValue.value], function (val) {
+      console.log('xx', val)
+      selectValues.value = val
+    })
+
+    const labels = computed(() => {
+      const selectLabels = []
+      options.value.forEach(item => {
+        if (selectValues.value && selectValues.value.length && selectValues.value.includes(item.value)) {
+          selectLabels.push(item.label)
+        }
+      })
+      return selectLabels.length ? selectLabels.join('、') : ''
     })
     return {
-      selectInput,
-      label
+      selectValues,
+      labels
     }
   },
   data () {
@@ -66,18 +77,28 @@ export default {
       this.show = true
     },
     blur (e) {
-      if (!this.multiple) {
-        this.selectInput.active = false
-        setTimeout(() => {
-          this.show = false
-        }, 200)
-      }
+      // this.selectInput.active = false
+      // setTimeout(() => {
+      //   this.show = false
+      // }, 200)
     },
     clear () {
-      this.$emit('update:modelValue', null)
+      this.$emit('update:modelValue', [])
     },
     click (item) {
-      this.$emit('update:modelValue', item.value)
+      if (item && Reflect.has(item, 'value')) {
+        const index = this.selectValues.findIndex(value => value === item.value)
+        if (index > -1) {
+          this.selectValues.splice(index, 1)
+        } else {
+          this.selectValues.push(item.value)
+        }
+        this.$emit('update:modelValue', clonedeep(this.selectValues))
+      }
+    },
+    mouseenter () {
+    },
+    mouseleave () {
     }
   }
 }

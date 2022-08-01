@@ -11,7 +11,7 @@
       ref="test"
       :modal-append-to-body="true"
       :wrapper-closable="false"
-      :visiable-model="false">
+      :visible-model="false">
       <div class="drawer-box">
         <header
           class="header">

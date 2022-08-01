@@ -3,18 +3,24 @@
     <vt-check
       v-model="value"
       :options="options" />
+    <vt-multiple-check
+      v-model="multipleValue"
+      :options="options" />
   </div>
 </template>
 
 <script>
 import check from './editor.vue'
+import editorMultiple from './editor-multiple.vue'
 export default {
   components: {
-    'vt-check': check
+    'vt-check': check,
+    'vt-multiple-check': editorMultiple
   },
   data () {
     return {
       value: 0,
+      multipleValue: [],
       options: [
         { value: 1, label: '一年级' },
         { value: 2, label: '二年级' },

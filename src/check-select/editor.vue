@@ -10,7 +10,7 @@
       @blur="blur"
       @clear="clear" />
     <vt-popper
-      :visiable="show">
+      :visible="show">
       <ul>
         <li
         v-for="(item) in options"

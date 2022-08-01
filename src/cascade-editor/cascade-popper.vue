@@ -35,21 +35,21 @@
         </span>
     </div>
     <vt-popper
-      :visiable="show"
+      :visible="show"
       :level="1">
       <slot
         name="firstLevel"
         :options="firstOpitons" />
     </vt-popper>
     <vt-popper
-      :visiable="show && !!secondOptions.length"
+      :visible="show && !!secondOptions.length"
       :level="2">
       <slot
         name="secondLevel"
         :options="secondOptions" />
     </vt-popper>
     <vt-popper
-      :visiable="show && !!thirdOptions.length"
+      :visible="show && !!thirdOptions.length"
       :level="3">
       <slot
         name="thirdLevel"
