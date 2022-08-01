@@ -16,7 +16,7 @@ import editorMultiple from './editor-multiple.vue'
 function createData () {
   let i = 0
   const res = []
-  while (i < 2500) {
+  while (i < 5) {
     i++
     res.push({ value: i, label: `${i}&年纪` })
   }

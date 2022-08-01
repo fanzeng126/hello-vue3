@@ -28,6 +28,7 @@
 <script>
 import { computed, toRefs, ref, watch } from 'vue'
 import clonedeep from 'lodash.clonedeep'
+
 // 单选选择框
 export default {
   props: {
@@ -60,7 +61,7 @@ export default {
           selectLabels.push(item.label)
         }
       })
-      return selectLabels.length ? selectLabels.join('、') : ''
+      return selectLabels.length ? selectLabels.join('，') : ''
     })
     return {
       multipleInput,
@@ -71,18 +72,22 @@ export default {
   },
   data () {
     return {
-      show: false
+      show: false,
+      timer: null
     }
   },
   mounted () {
   },
   methods: {
     focus (val) {
+      if (this.timer) {
+        clearTimeout(this.timer)
+      }
       this.show = true
     },
     blur (e) {
       if (!this.modelVisible) {
-        setTimeout(() => {
+        this.timer = setTimeout(() => {
           this.show = false
         }, 200)
       }

@@ -44,6 +44,11 @@ export default {
       mouseleave
     }
   },
+  data () {
+    return {
+      timer: null
+    }
+  },
   emits: [
     'mouseenter',
     'mouseleave'
@@ -51,24 +56,32 @@ export default {
   watch: {
     visible (newVal) {
       if (newVal) {
+        if (this.timer) {
+          clearTimeout(this.timer)
+        }
         this.show = true
         const htmlFontSize = this.$htmlFontSize()
         this.$nextTick(() => {
           const {
             top,
             left,
-            width
+            width,
+            upOrUnder
           } = getRectStyle(this.$parent.$el)
           this.style.top = (top / htmlFontSize) + 'rem'
           this.style.left = (((this.level - 1) * width + left) / htmlFontSize) + 'rem'
           this.style.width = (width / htmlFontSize) + 'rem'
           this.style['max-height'] = `${300 / htmlFontSize}rem`
           this.style.padding = `${5 / htmlFontSize}rem 0`
+          if (!upOrUnder) {
+            this.style.transform = 'translateY(-100%)'
+          }
         })
       } else {
         this.style['max-height'] = '0px'
         this.style.padding = '0px'
-        setTimeout(() => {
+        this.style.transform = 'none'
+        this.timer = setTimeout(() => {
           this.show = false
         }, 100)
       }
