@@ -35,6 +35,10 @@ export default {
     options: {
       type: Array,
       default: () => []
+    },
+    multiple: { // 是否可以多选
+      type: Boolean,
+      default: false
     }
   },
   emits: ['update:modelValue'],
@@ -62,10 +66,12 @@ export default {
       this.show = true
     },
     blur (e) {
-      this.selectInput.active = false
-      setTimeout(() => {
-        this.show = false
-      }, 200)
+      if (!this.multiple) {
+        this.selectInput.active = false
+        setTimeout(() => {
+          this.show = false
+        }, 200)
+      }
     },
     clear () {
       this.$emit('update:modelValue', null)

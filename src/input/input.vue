@@ -169,6 +169,10 @@ export default {
     },
     divHeight: {
       type: Number
+    },
+    modelType: {
+      type: String,
+      default: 'input'
     }
   },
   emits: [
@@ -179,8 +183,8 @@ export default {
     'change',
     'input'
   ],
-  setup (props, { emit }) {
-    const { modelValue: value, type, wordLimit, suffixIcon, clearable } = toRefs(props)
+  setup (props, { emit, expose }) {
+    const { modelValue: value, type, wordLimit, suffixIcon, clearable, modelType } = toRefs(props)
 
     const vtInput = ref(null)
 
@@ -200,6 +204,20 @@ export default {
 
     const inputSuffixIcon = computed(() => type.value === 'password' ? 'eyes' : clearable.value ? 'close-circle' : suffixIcon.value)
 
+    // 判断离交事件是否取消选中状态
+
+    let blur
+    if (modelType.value === 'input') {
+      blur = function () {
+        active.value = false
+        emit('blur', false)
+      }
+    } else {
+      blur = function () {
+        emit('blur', false)
+      }
+    }
+
     return {
       value,
       inputWordLimit,
@@ -209,7 +227,8 @@ export default {
       inputType,
       vtInput,
       tipMsgRight, // 字符限制提示的右边距
-      active
+      active, // 选中状态
+      blur // 离交事件
     }
   },
   data () {
@@ -264,10 +283,6 @@ export default {
       // 选中事件时设置选中状态
       this.active = true
       this.$emit('focus', true)
-    },
-    blur (e) {
-      this.active = false
-      this.$emit('blur', false)
     },
     clickSuffixIcon (e) {
       switch (this.inputSuffixIcon) {
