@@ -29,7 +29,7 @@ export default {
     clickPrefixIcon (val) {
       console.log('点击前面的按钮', val)
     },
-    clear () {
+    clear (val) {
       this.value = ''
     }
   }

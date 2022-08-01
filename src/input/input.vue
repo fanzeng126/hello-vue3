@@ -28,6 +28,7 @@
       :prefix-icon="!!prefixIcon"
       :suffix-icon="!!inputSuffixIcon"
       :word-limit="!!inputWordLimit"
+      :active="active"
       @input="input"
       @change="change"
       @focus="focus"
@@ -184,6 +185,8 @@ export default {
     const vtInput = ref(null)
 
     const seePassword = ref(false)
+    // 是否选中状态
+    const active = ref(false)
 
     const inputType = computed(() => seePassword.value ? 'text' : type.value)
 
@@ -205,7 +208,8 @@ export default {
       seePassword,
       inputType,
       vtInput,
-      tipMsgRight
+      tipMsgRight, // 字符限制提示的右边距
+      active
     }
   },
   data () {
@@ -257,15 +261,18 @@ export default {
       this.$emit('update:modelValue', newVal)
     },
     focus (e) {
+      // 选中事件时设置选中状态
+      this.active = true
       this.$emit('focus', true)
     },
     blur (e) {
+      this.active = false
       this.$emit('blur', false)
     },
     clickSuffixIcon (e) {
       switch (this.inputSuffixIcon) {
         case 'close-circle':
-          this.$emit('clear')
+          this.$emit('clear', '')
           break
         default:
           break
