@@ -1,3 +1,4 @@
+import { onMounted, nextTick } from 'vue'
 export function getRectStyle (el) {
   let {
     top,
@@ -29,4 +30,39 @@ export function getRectStyle (el) {
     height,
     upOrUnder
   }
+}
+function calcPopperPosition (el, style) {
+  console.log(el)
+  const htmlDom = document.documentElement
+  const htmlFontSize = parseFloat(htmlDom.style.fontSize, 10)
+  const {
+    top,
+    left,
+    width,
+    upOrUnder
+  } = getRectStyle(el.value)
+  style.top = (top / htmlFontSize) + 'rem'
+  style.left = (left / htmlFontSize) + 'rem'
+  style.width = (width / htmlFontSize) + 'rem'
+  if (!upOrUnder) {
+    style.transform = 'translateY(-100%)'
+  } else {
+    style.transform = 'none'
+  }
+}
+
+export function calcPosition (el, style) {
+  onMounted(
+    () => {
+      // 计算弹窗的位置
+      setTimeout(() => {
+        calcPopperPosition(el, style)
+      })
+      window.addEventListener('resize', () => {
+        nextTick(() => {
+          calcPopperPosition(el, style)
+        })
+      })
+    }
+  )
 }

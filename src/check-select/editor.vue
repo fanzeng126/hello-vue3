@@ -1,5 +1,7 @@
 <template>
-  <div class="editor">
+  <div
+    ref="editor"
+    class="editor">
     <vt-input
       v-model="label"
       ref="selectInput"
@@ -25,7 +27,7 @@
 </template>
 <script>
 import { computed, toRefs, ref, reactive } from 'vue'
-import { getRectStyle } from '../utils/getRectStyle'
+import { calcPosition } from '../utils/getRectStyle'
 // 单选选择框
 export default {
   props: {
@@ -48,27 +50,19 @@ export default {
     })
 
     const style = reactive({})
+    const editor = ref(null)
+    calcPosition(editor, style)
     return {
       selectInput,
       label,
-      style
+      style,
+      editor
     }
   },
   data () {
     return {
       show: false
     }
-  },
-  mounted () {
-    // 计算弹窗的位置
-    setTimeout(() => {
-      this.calcPopperPosition()
-    })
-    window.addEventListener('resize', () => {
-      this.$nextTick(() => {
-        this.calcPopperPosition()
-      })
-    })
   },
   methods: {
     focus (val) {
@@ -84,23 +78,6 @@ export default {
     },
     click (item) {
       this.$emit('update:modelValue', item.value)
-    },
-    calcPopperPosition () {
-      const htmlFontSize = this.$htmlFontSize()
-      const {
-        top,
-        left,
-        width,
-        upOrUnder
-      } = getRectStyle(this.$el)
-      this.style.top = (top / htmlFontSize) + 'rem'
-      this.style.left = (left / htmlFontSize) + 'rem'
-      this.style.width = (width / htmlFontSize) + 'rem'
-      if (!upOrUnder) {
-        this.style.transform = 'translateY(-100%)'
-      } else {
-        this.style.transform = 'none'
-      }
     }
   }
 }

@@ -1,5 +1,7 @@
 <template>
-  <div class="editor">
+  <div
+    ref="editor"
+    class="editor">
     <vt-input
       v-model="labels"
       ref="multipleInput"
@@ -29,7 +31,7 @@
 <script>
 import { computed, toRefs, ref, watch, reactive } from 'vue'
 import clonedeep from 'lodash.clonedeep'
-import { getRectStyle } from '../utils/getRectStyle'
+import { calcPosition } from '../utils/getRectStyle'
 
 // 单选选择框
 export default {
@@ -52,6 +54,8 @@ export default {
     selectValues.value = clonedeep(modelValue.value)
 
     const style = reactive({})
+    const editor = ref(null)
+    calcPosition(editor, style)
 
     watch(() => [...modelValue.value], function (val) {
       console.log('xx', val)
@@ -72,7 +76,8 @@ export default {
       selectValues,
       labels,
       modelVisible,
-      style
+      style,
+      editor // 当前实例
     }
   },
   data () {
@@ -80,17 +85,6 @@ export default {
       show: false,
       timer: null
     }
-  },
-  mounted () {
-    // 计算弹窗的位置
-    setTimeout(() => {
-      this.calcPopperPosition()
-    })
-    window.addEventListener('resize', () => {
-      this.$nextTick(() => {
-        this.calcPopperPosition()
-      })
-    })
   },
   methods: {
     focus (val) {
@@ -126,23 +120,6 @@ export default {
     mouseleave () {
       this.multipleInput.vtInput.focus()
       this.modelVisible = false
-    },
-    calcPopperPosition () {
-      const htmlFontSize = this.$htmlFontSize()
-      const {
-        top,
-        left,
-        width,
-        upOrUnder
-      } = getRectStyle(this.$el)
-      this.style.top = (top / htmlFontSize) + 'rem'
-      this.style.left = (left / htmlFontSize) + 'rem'
-      this.style.width = (width / htmlFontSize) + 'rem'
-      if (!upOrUnder) {
-        this.style.transform = 'translateY(-100%)'
-      } else {
-        this.style.transform = 'none'
-      }
     }
   }
 }
