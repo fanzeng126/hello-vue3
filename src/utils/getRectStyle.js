@@ -31,7 +31,7 @@ export function getRectStyle (el) {
     upOrUnder
   }
 }
-function calcPopperPosition (el, style) {
+export function calcPopperPosition (el, style, level) {
   const htmlDom = document.documentElement
   const htmlFontSize = parseFloat(htmlDom.style.fontSize, 10)
   const {
@@ -41,7 +41,7 @@ function calcPopperPosition (el, style) {
     upOrUnder
   } = getRectStyle(el.value)
   style.top = (top / htmlFontSize) + 'rem'
-  style.left = (left / htmlFontSize) + 'rem'
+  style.left = (((level - 1) * width + left) / htmlFontSize) + 'rem'
   style.width = (width / htmlFontSize) + 'rem'
   if (!upOrUnder) {
     style.transform = 'translateY(-100%)'
@@ -50,16 +50,16 @@ function calcPopperPosition (el, style) {
   }
 }
 
-export function calcPosition (el, style) {
+export function calcPosition (el, style, level = 1) {
   onMounted(
     () => {
       // 计算弹窗的位置
       setTimeout(() => {
-        calcPopperPosition(el, style)
+        calcPopperPosition(el, style, level)
       })
       window.addEventListener('resize', () => {
         nextTick(() => {
-          calcPopperPosition(el, style)
+          calcPopperPosition(el, style, level)
         })
       })
     }

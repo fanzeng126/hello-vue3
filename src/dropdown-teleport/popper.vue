@@ -24,10 +24,6 @@ export default {
       default: false,
       required: true
     },
-    level: { // 级联选择器时的弹窗位置变化
-      type: Number,
-      default: 1
-    },
     style: { // 图案位置
       type: Object,
       default: () => {}

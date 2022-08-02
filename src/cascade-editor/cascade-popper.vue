@@ -1,5 +1,7 @@
 <template>
-  <div class="editor">
+  <div
+    ref="editor"
+    class="editor">
     <vt-input
       v-model="value"
       ref="input"
@@ -36,21 +38,21 @@
     </div>
     <vt-popper
       :visible="show"
-      :level="1">
+      :style="style1">
       <slot
         name="firstLevel"
         :options="firstOpitons" />
     </vt-popper>
     <vt-popper
       :visible="show && !!secondOptions.length"
-      :level="2">
+      :style="style2">
       <slot
         name="secondLevel"
         :options="secondOptions" />
     </vt-popper>
     <vt-popper
       :visible="show && !!thirdOptions.length"
-      :level="3">
+      :style="style3">
       <slot
         name="thirdLevel"
         :options="thirdOptions" />
@@ -58,7 +60,9 @@
   </div>
 </template>
 <script>
-import { computed, toRefs, ref, watch, nextTick } from 'vue'
+import { computed, toRefs, ref, watch, nextTick, reactive } from 'vue'
+import { calcPosition, calcPopperPosition } from '../utils/getRectStyle'
+
 export default {
   props: {
     modelValue: {
@@ -148,9 +152,21 @@ export default {
           nextTick(function () {
             const { height } = cascaderTags.value.getBoundingClientRect()
             divHeight.value = height + 5
+            nextTick(function () {
+              // 改变div时计算高度
+              calcPopperPosition(editor, style1, 1)
+              calcPopperPosition(editor, style2, 2)
+              calcPopperPosition(editor, style3, 3)
+            })
           })
         } else {
           divHeight.value = 0
+          nextTick(function () {
+            // 改变div时计算高度
+            calcPopperPosition(editor, style1, 1)
+            calcPopperPosition(editor, style2, 2)
+            calcPopperPosition(editor, style3, 3)
+          })
         }
       })
     }
@@ -180,6 +196,14 @@ export default {
       input.value.vtInput.focus()
     }
 
+    const style1 = reactive({})
+    const style2 = reactive({})
+    const style3 = reactive({})
+    const editor = ref(null)
+    calcPosition(editor, style1, 1)
+    calcPosition(editor, style2, 2)
+    calcPosition(editor, style3, 3)
+
     return {
       firstOpitons,
       secondOptions,
@@ -190,7 +214,11 @@ export default {
       clearTimeOutAndFocus,
       labels,
       divHeight,
-      cascaderTags
+      cascaderTags,
+      editor,
+      style1,
+      style2,
+      style3
     }
   },
   data () {

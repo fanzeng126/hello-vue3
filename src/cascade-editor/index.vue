@@ -3,6 +3,7 @@
     <vt-cascade
       :options="options" />
     <vt-cascade-multiple
+       class="cascade-multiple"
       :options="options" />
   </div>
 </template>
@@ -20,5 +21,9 @@ export default {
     float: left;
     margin-right: 200px;
   }
+}
+.cascade-multiple {
+  position: absolute !important;
+  bottom: 320px;
 }
 </style>
