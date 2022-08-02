@@ -7,6 +7,11 @@
       v-model="multipleValue"
       class="mu-input"
       :options="options" />
+    <vt-button
+      type="primary"
+      @click="clear">
+      primary
+    </vt-button>
   </div>
 </template>
 
@@ -32,7 +37,7 @@ export default {
   data () {
     return {
       value: 0,
-      multipleValue: [],
+      multipleValue: [1, 250],
       options: createData()
       //  [
       //   { value: 1, label: '一年级' },
@@ -60,6 +65,11 @@ export default {
     }
   },
   mounted () {
+  },
+  methods: {
+    clear () {
+      this.multipleValue = []
+    }
   }
 }
 </script>
