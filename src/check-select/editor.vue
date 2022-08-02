@@ -9,7 +9,8 @@
       @blur="blur"
       @clear="clear" />
     <vt-popper
-      :visible="show">
+      :visible="show"
+      :style="style">
       <ul>
         <li
         v-for="(item) in options"
@@ -23,7 +24,8 @@
   </div>
 </template>
 <script>
-import { computed, toRefs, ref } from 'vue'
+import { computed, toRefs, ref, reactive } from 'vue'
+import { getRectStyle } from '../utils/getRectStyle'
 // 单选选择框
 export default {
   props: {
@@ -44,9 +46,12 @@ export default {
       const filterValue = options.value.filter(item => item.value === modelValue.value)
       return filterValue.length ? filterValue[0].label : ''
     })
+
+    const style = reactive({})
     return {
       selectInput,
-      label
+      label,
+      style
     }
   },
   data () {
@@ -55,6 +60,15 @@ export default {
     }
   },
   mounted () {
+    // 计算弹窗的位置
+    setTimeout(() => {
+      this.calcPopperPosition()
+    })
+    window.addEventListener('resize', () => {
+      this.$nextTick(() => {
+        this.calcPopperPosition()
+      })
+    })
   },
   methods: {
     focus (val) {
@@ -70,6 +84,23 @@ export default {
     },
     click (item) {
       this.$emit('update:modelValue', item.value)
+    },
+    calcPopperPosition () {
+      const htmlFontSize = this.$htmlFontSize()
+      const {
+        top,
+        left,
+        width,
+        upOrUnder
+      } = getRectStyle(this.$el)
+      this.style.top = (top / htmlFontSize) + 'rem'
+      this.style.left = (left / htmlFontSize) + 'rem'
+      this.style.width = (width / htmlFontSize) + 'rem'
+      if (!upOrUnder) {
+        this.style.transform = 'translateY(-100%)'
+      } else {
+        this.style.transform = 'none'
+      }
     }
   }
 }

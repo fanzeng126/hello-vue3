@@ -5,6 +5,7 @@
       :options="options" />
     <vt-multiple-check
       v-model="multipleValue"
+      class="mu-input"
       :options="options" />
   </div>
 </template>
@@ -16,7 +17,7 @@ import editorMultiple from './editor-multiple.vue'
 function createData () {
   let i = 0
   const res = []
-  while (i < 5) {
+  while (i < 2505) {
     i++
     res.push({ value: i, label: `${i}&年纪` })
   }
@@ -62,5 +63,12 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style lang="postcss" scoped>
+.model {
+  height: 100%;
+  .mu-input {
+    position: absolute;
+    bottom: 320px;
+  }
+}
 </style>

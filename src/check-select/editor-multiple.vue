@@ -11,6 +11,7 @@
       @clear="clear" />
     <vt-popper
       :visible="show"
+      :style="style"
       @mouseenter="mouseenter"
       @mouseleave="mouseleave">
       <ul>
@@ -26,8 +27,9 @@
   </div>
 </template>
 <script>
-import { computed, toRefs, ref, watch } from 'vue'
+import { computed, toRefs, ref, watch, reactive } from 'vue'
 import clonedeep from 'lodash.clonedeep'
+import { getRectStyle } from '../utils/getRectStyle'
 
 // 单选选择框
 export default {
@@ -49,6 +51,8 @@ export default {
     const selectValues = ref([])
     selectValues.value = clonedeep(modelValue.value)
 
+    const style = reactive({})
+
     watch(() => [...modelValue.value], function (val) {
       console.log('xx', val)
       selectValues.value = val
@@ -67,7 +71,8 @@ export default {
       multipleInput,
       selectValues,
       labels,
-      modelVisible
+      modelVisible,
+      style
     }
   },
   data () {
@@ -77,6 +82,15 @@ export default {
     }
   },
   mounted () {
+    // 计算弹窗的位置
+    setTimeout(() => {
+      this.calcPopperPosition()
+    })
+    window.addEventListener('resize', () => {
+      this.$nextTick(() => {
+        this.calcPopperPosition()
+      })
+    })
   },
   methods: {
     focus (val) {
@@ -112,6 +126,23 @@ export default {
     mouseleave () {
       this.multipleInput.vtInput.focus()
       this.modelVisible = false
+    },
+    calcPopperPosition () {
+      const htmlFontSize = this.$htmlFontSize()
+      const {
+        top,
+        left,
+        width,
+        upOrUnder
+      } = getRectStyle(this.$el)
+      this.style.top = (top / htmlFontSize) + 'rem'
+      this.style.left = (left / htmlFontSize) + 'rem'
+      this.style.width = (width / htmlFontSize) + 'rem'
+      if (!upOrUnder) {
+        this.style.transform = 'translateY(-100%)'
+      } else {
+        this.style.transform = 'none'
+      }
     }
   }
 }
