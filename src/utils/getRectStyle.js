@@ -32,7 +32,6 @@ export function getRectStyle (el) {
   }
 }
 function calcPopperPosition (el, style) {
-  console.log(el)
   const htmlDom = document.documentElement
   const htmlFontSize = parseFloat(htmlDom.style.fontSize, 10)
   const {
