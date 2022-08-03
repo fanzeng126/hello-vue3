@@ -11,6 +11,10 @@ function installDirectives (app) {
     mounted (el, binding) {
       attach(el, binding.value)
     },
+    updated (el) {
+      //  :class=[] 会改变原来手动添加的className，需要重新添加
+      el.classList.add('mu-scrollbar')
+    },
     unmounted (el) {
       detach(el)
     }

@@ -3,6 +3,7 @@
     v-show="show"
     to="body">
     <div
+      v-mussel-scrollbar
       :class="[
         'editor-popper',
         show ? 'show' : ''
@@ -85,7 +86,7 @@ export default {
   transition: all ease .1s;
   position: absolute;
   font-size: $documentFontSize;
-  overflow: auto;
+  overflow: hidden;
   box-sizing: border-box;
   line-height: $normalLineHeight;
   max-height: 0;

@@ -17,7 +17,7 @@ import drawer from './drawer/drawer.vue'
 import drawerModel from './drawer/drawer-model.vue'
 import '../static/css/index'
 import './resetFont'
-import { installDirectives } from './scrollbar/index'
+import { installDirectives } from './scrollbar/index' // mussel-scrollbar
 
 const app = createApp(App)
 installDirectives(app) // 添加滚动条
