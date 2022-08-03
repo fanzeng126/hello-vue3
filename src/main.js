@@ -17,8 +17,10 @@ import drawer from './drawer/drawer.vue'
 import drawerModel from './drawer/drawer-model.vue'
 import '../static/css/index'
 import './resetFont'
+import { installDirectives } from './scrollbar/index'
 
 const app = createApp(App)
+installDirectives(app) // 添加滚动条
 app.use(store).use(router).mount('#app')
 app.component('vt-icon', vtIcon)
 app.component('vt-popper', popper)
