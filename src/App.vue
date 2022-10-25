@@ -2,6 +2,17 @@
   <router-view/>
 </template>
 
+<script>
+import { setHtmlFontSize } from './resetFont'
+import { onBeforeMount } from 'vue'
+export default {
+  setup () {
+    // window.onload = setHtmlFontSize 这个渲染的时间不对
+    onBeforeMount(setHtmlFontSize)
+  }
+}
+</script>
+
 <style lang="postcss">
 * {
   margin: 0;

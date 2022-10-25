@@ -1,7 +1,6 @@
 window.onresize = setHtmlFontSize
-window.onload = setHtmlFontSize
 
-function setHtmlFontSize () {
+export function setHtmlFontSize () {
   const htmlWidth =
     document.documentElement.clientWidth || document.body.clientWidth
   const htmlDom = document.documentElement
